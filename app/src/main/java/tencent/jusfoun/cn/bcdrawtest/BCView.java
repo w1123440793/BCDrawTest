@@ -203,6 +203,7 @@ public class BCView extends View {
                 mTran[1]= cirY;
             canvas.translate(mTran[0], mTran[1]);
 //        } else if (mode == SCAL)
+        canvas.save();
             canvas.scale(scal, scal, cirX, cirY);
         canvas.drawCircle(cirX, cirY, cirR, cirPaint);
         cirPaint.setTextSize(20);
@@ -224,7 +225,7 @@ public class BCView extends View {
                         , cirxs[i * 2 + 1], cirys[i * 2 + 1]);
 
                 canvas.save();
-//                canvas.rotate(anglesMax[i * 2], cirxs[i * 2], cirys[i * 2]);
+                canvas.rotate(anglesMax[i * 2], cirxs[i * 2], cirys[i * 2]);
                 cirPaint.getFontMetrics();
                 canvas.drawText("hahahahahahahahha" + i, cirxs[i * 2], cirys[i * 2], cirPaint);
 
@@ -232,16 +233,17 @@ public class BCView extends View {
 //                rectF.
                 canvas.restore();
                 canvas.save();
-//                canvas.rotate(anglesMax[i * 2 + 1], cirxs[i * 2 + 1], cirys[i * 2 + 1]);
+                canvas.rotate(anglesMax[i * 2 + 1], cirxs[i * 2 + 1], cirys[i * 2 + 1]);
                 canvas.drawText("hahahahahahahahha" + i, cirxs[i * 2 + 1], cirys[i * 2 + 1], cirPaint);
                 canvas.restore();
             }
             else {
                 canvas.save();
-//                canvas.rotate(angles[i], cirXs[i], cirYs[i]);
+                canvas.rotate(angles[i], cirXs[i], cirYs[i]);
                 canvas.drawText("hahahahahahahahha" + i, cirXs[i], cirYs[i], cirPaint);
                 canvas.restore();
             }
+            canvas.restore();
             canvas.drawPath(linePath, linePaint);
             cirPaint.setStyle(Paint.Style.STROKE);
             canvas.drawCircle(cirXs[i], cirYs[i], 10, cirPaint);
@@ -277,7 +279,7 @@ public class BCView extends View {
             case MotionEvent.ACTION_DOWN:
                 break;
             case MotionEvent.ACTION_MOVE:
-                float toScal = getInitLength(event);
+                float toScal = getXYLength(event);
                 if (Float.compare(minit, 0f) == 0)
                     break;
                 scal = toScal / minit;
@@ -287,13 +289,13 @@ public class BCView extends View {
             case MotionEvent.ACTION_POINTER_DOWN:
 
                 if (event.getPointerCount() == 2) {
-                    minit = getInitLength(event);
+                    minit = getXYLength(event);
                 }
                 break;
         }
     }
 
-    public float getInitLength(MotionEvent event) {
+    public float getXYLength(MotionEvent event) {
 
         float x = event.getX(0) - event.getX(1);
         float y = event.getY(0) - event.getY(1);

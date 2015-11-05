@@ -9,9 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/SignaturePad-Example" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/signature-pad" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -1,1 +1,1 @@
-include ':app', ':SignaturePad-Example', ':signature-pad'
+include ':app'

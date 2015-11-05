@@ -5,10 +5,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.RadialGradient;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextPaint;
@@ -60,7 +63,10 @@ public class BCMoreView extends View {
     private PointF[] pointFsOne, pointFsTwo;
 
     private ArrayList<PointF> p4 = new ArrayList<>();
-    private boolean isSacle=false;
+    private boolean isSacle = false;
+    private boolean isMove = false;
+    private float minp0X = 0;
+    private float minp2X = 0;
 
     public BCMoreView(Context context) {
         super(context);
@@ -105,12 +111,12 @@ public class BCMoreView extends View {
         paintThree.setAlpha(255);
 
         cirPaint = new Paint();
-        cirPaint.setStyle(Paint.Style.FILL);
 //        cirPaint.setStyle(Paint.Style.FILL);
+        cirPaint.setStyle(Paint.Style.STROKE);
         cirPaint.setColor(Color.CYAN);
-        cirPaint.setStrokeWidth(3);
+        cirPaint.setStrokeWidth(10);
         cirPaint.setAntiAlias(true);
-        cirPaint.setAlpha(100);
+//        cirPaint.setAlpha(100);
 
         path = new Path();
 
@@ -130,6 +136,7 @@ public class BCMoreView extends View {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
 //            duration=500;
+
                 for (ValueAnimator v : animators) {
                     if (!v.isStarted() && !v.isRunning()) {
 
@@ -163,6 +170,10 @@ public class BCMoreView extends View {
 //        canvas.scale(scal, scal, mCirX, mCirY);
 
         for (int i = 0; i < p0.size(); i++) {
+            if (i == 0)
+                minp0X = p0.get(0).x;
+            else
+                minp0X = Math.max(minp0X, p0.get(i).x);
             ArrayList<PointF> ps = lists.get(i);
             canvas.drawCircle(p0.get(i).x, p0.get(i).y, mCount, paintList.get(i));
             path.reset();
@@ -175,7 +186,7 @@ public class BCMoreView extends View {
                 }
             } else {
                 if (!isSacle) {
-                    int j=a/2;
+                    int j = a;
                     if (j < ps.size()) {
                         canvas.drawCircle(ps.get(j).x, ps.get(j).y, 20, paintList.get(i));
                     } else {
@@ -189,6 +200,10 @@ public class BCMoreView extends View {
 
         for (int i = p0.size(); i < p2.size() + p0.size(); i++) {
             int count = i - p0.size();
+            if (count == 0)
+                minp2X = p2.get(0).x;
+            else
+                minp2X = Math.min(minp2X, p2.get(count).x);
             ArrayList<PointF> ps = lists.get(i);
             canvas.drawCircle(p2.get(count).x, p2.get(count).y, mCount, paintList.get(i));
             path.reset();
@@ -202,8 +217,9 @@ public class BCMoreView extends View {
                 }
             } else {
                 if (!isSacle) {
-                    if (a / 2 < ps.size()) {
-                        canvas.drawCircle(ps.get(a / 2).x, ps.get(a / 2).y, 20, paintList.get(i));
+                    int j = a;
+                    if (j < ps.size()) {
+                        canvas.drawCircle(ps.get(j).x, ps.get(j).y, 20, paintList.get(i));
 //                    canvas.drawCircle(pointf.x, pointf.y, 20, paintList.get(i));
                     }
                     path.quadTo(p3.get(count).x, p3.get(count).y, p2.get(count).x, p2.get(count).y);
@@ -211,8 +227,21 @@ public class BCMoreView extends View {
             }
             canvas.drawPath(path, paintTwo);
         }
-        canvas.drawCircle(mCirX, mCirY, mCount, cirPaint);
+//        canvas.drawCircle(mCirX, mCirY, mCount, cirPaint);
         canvas.drawText("第一个", mCirX, mCirY, textPaint);
+
+        if (isDrawChildLine) {
+            path.reset();
+            if (count < p0.size()) {
+                path.moveTo(p0.get(count).x, p0.get(count).y);
+                path.quadTo(pointChildBc.x, pointChildBc.y, pointFChild.x, pointFChild.y);
+            } else {
+                path.moveTo(p2.get(count - p0.size()).x, p2.get(count - p0.size()).y);
+                path.quadTo(pointChildBc.x, pointChildBc.y, pointFChild.x, pointFChild.y);
+            }
+            canvas.drawPath(path, paintThree);
+            canvas.drawCircle(pointFChild.x, pointFChild.y, mCount, cirPaint);
+        }
         canvas.restore();
         is = false;
     }
@@ -228,7 +257,7 @@ public class BCMoreView extends View {
             mRaius = (float) (mCirX * 0.1);
         }
 
-        RectF rectf=new RectF(mCirX-50,mCirY-50,mCirX+50,mCirY+50);
+        RectF rectf = new RectF(mCirX - 50, mCirY - 50, mCirX + 50, mCirY + 50);
         list.add(rectf);
         strings.add("第0个");
 
@@ -242,15 +271,20 @@ public class BCMoreView extends View {
             p0.add(pointf);
             Paint paint = new Paint();
             paint.setStyle(Paint.Style.FILL);
-            paint.setColor(Color.CYAN);
-            paint.setStrokeWidth(3);
+//            paint.setStyle(Paint.Style.STROKE);
+//            paint.setColor(Color.CYAN);
+            paint.setStrokeWidth(20);
+//            RadialGradient shader=new RadialGradient(p0.get(i).x,p0.get(i).y,mRaius,
+//                    new int[]{Color.TRANSPARENT,Color.CYAN},new float[]{0.2f, 1f},Shader.TileMode.REPEAT);
+            RadialGradient shader = new RadialGradient(p0.get(i).x, p0.get(i).y, mRaius, Color.TRANSPARENT, Color.CYAN, Shader.TileMode.REPEAT);
+            paint.setShader(shader);
             paint.setAntiAlias(true);
-            paint.setAlpha(100);
+//            paint.setAlpha(100);
             paintList.add(paint);
 
-            rectf=new RectF(pointf.x-50,pointf.y-50,pointf.x+50,pointf.y+50);
+            rectf = new RectF(pointf.x - 50, pointf.y - 50, pointf.x + 50, pointf.y + 50);
             list.add(rectf);
-            strings.add("第"+(i+1)+"个");
+            strings.add("第" + (i + 1) + "个");
         }
 
         for (int i = 0; i < index; i++) {
@@ -269,13 +303,13 @@ public class BCMoreView extends View {
             paint.setAntiAlias(true);
             paint.setAlpha(100);
             paintList.add(paint);
-            rectf=new RectF(pointf.x-50,pointf.y-50,pointf.x+50,pointf.y+50);
+            rectf = new RectF(pointf.x - 50, pointf.y - 50, pointf.x + 50, pointf.y + 50);
             list.add(rectf);
-            strings.add("第"+(i+p0.size()+1)+"个");
+            strings.add("第" + (i + p0.size() + 1) + "个");
         }
 
         for (PointF pointf : p0) {
-            cirPoint = MathHelper.getInstance().getBezierQuad(pointf.x - mCirX, pointf.y - mCirY, mCirX, mCirY, mRaius * 3f);
+            cirPoint = MathHelper.getInstance().getBezierQuad(pointf.x - mCirX, pointf.y - mCirY, mCirX, mCirY, mRaius * 5.5f);
             PointF p = new PointF();
             p.x = cirPoint.X;
             p.y = cirPoint.Y;
@@ -283,13 +317,15 @@ public class BCMoreView extends View {
         }
 
         for (PointF pointf : p2) {
-            cirPoint = MathHelper.getInstance().getBezierQuad(pointf.x - mCirX, pointf.y - mCirY, mCirX, mCirY, mRaius * 3f);
+            cirPoint = MathHelper.getInstance().getBezierQuad(pointf.x - mCirX, pointf.y - mCirY, mCirX, mCirY, mRaius * 5.5f);
             PointF p = new PointF();
             p.x = cirPoint.X;
             p.y = cirPoint.Y;
             p3.add(p);
         }
 
+        RadialGradient shader = new RadialGradient(mCirX, mCirY, mRaius, Color.TRANSPARENT, Color.CYAN, Shader.TileMode.REPEAT);
+        cirPaint.setShader(shader);
         start();
     }
 
@@ -306,6 +342,11 @@ public class BCMoreView extends View {
 
     }
 
+    private boolean isDrawChildLine = false;
+    private PointF pointFChild = new PointF();
+    private PointF pointChildBc = new PointF();
+    private int count = 0;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getPointerCount()) {
@@ -318,14 +359,47 @@ public class BCMoreView extends View {
         }
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
-                float x = event.getX() - mTran[0]-x1+x3;
-                float y = event.getY() - mTran[1]-x2+x4;
+                if (isMove) {
+                    isMove = false;
+                    break;
+                }
+                float x = 0;
+//                if (event.getX()<mCirX)
+//                     x= event.getX() - mTran[0]+x1+x3;
+//                else if (event.getX()>mCirX)
+//                    x= event.getX() - mTran[0]-x2+x4;
+//                else
+                x = event.getX() - mTran[0];
+                float y = event.getY() - mTran[1];
                 int count = isInRect(x, y);
-                if (count >= 0)
+                if (count >= 0) {
                     Toast.makeText(context, strings.get(count), Toast.LENGTH_SHORT).show();
+                    if (count != 0) {
+                        count -= 1;
+                        isDrawChildLine = true;
+                        if (count < p0.size()) {
+                            cirPoint = MathHelper.getInstance().getXY(160, p0.get(count).x, p0.get(count).y, 9 * mRaius);
+                            pointFChild.x = cirPoint.X;
+                            pointFChild.y = cirPoint.Y;
+                            cirPoint = MathHelper.getInstance().getBezierQuad(pointFChild.x - p0.get(count).x, pointFChild.y - p0.get(count).y
+                                    , p0.get(count).x, p0.get(count).y, 5f * mRaius);
+                            pointChildBc.x = cirPoint.X;
+                            pointChildBc.y = cirPoint.Y;
+                            BCMoreView.this.count = count;
+                        } else {
+                            cirPoint = MathHelper.getInstance().getXY(330, p2.get(count - p0.size()).x, p2.get(count - p0.size()).y, 9 * mRaius);
+                            pointFChild.x = cirPoint.X;
+                            pointFChild.y = cirPoint.Y;
+                            cirPoint = MathHelper.getInstance().getBezierQuad(pointFChild.x - p2.get(count - p0.size()).x, pointFChild.y - p2.get(count - p0.size()).y
+                                    , p2.get(count - p0.size()).x, p2.get(count - p0.size()).y, 5f * mRaius);
+                            pointChildBc.x = cirPoint.X;
+                            pointChildBc.y = cirPoint.Y;
+                            BCMoreView.this.count = count;
+                        }
+                    }
+                }
                 break;
         }
-
         return true;
     }
 
@@ -439,14 +513,15 @@ public class BCMoreView extends View {
                             handler.sendMessage(new Message());
                         if (mCount < mRaius) {
                             mCount += 1f;
-                            mAlp *= (1 - mCount / mRaius);
+                            mAlp *= (1 - (float) mCount / mRaius);
+//                            Log.e("malp",mAlp+"");
                         } else {
                             mCount = 0;
                             mAlp = 255;
                         }
                         a++;
                         try {
-                            Thread.sleep(10);
+                            Thread.sleep(20);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -494,13 +569,25 @@ public class BCMoreView extends View {
             bcXY[1] = mCirY - (float) (mRaius * 3 * Math.sin(arcAngle));
     }
 
+    private float initX = 0, initY = 0;
+
     public void translate(MotionEvent event) {
+        if (doublePointer) {
+            doublePointer = false;
+            return;
+        }
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downX = event.getX();
                 downY = event.getY();
+                initX = downX;
+                initY = downY;
                 break;
             case MotionEvent.ACTION_MOVE:
+                if ((Math.abs(event.getX() - initX)) < 5 && (Math.abs(event.getY() - initY) < 5))
+                    isMove = false;
+                else
+                    isMove = true;
                 mTran[0] = mTran[0] + event.getX() - downX;
                 mTran[1] = mTran[1] + event.getY() - downY;
                 downX = event.getX();
@@ -513,9 +600,22 @@ public class BCMoreView extends View {
         }
     }
 
-    private float x1=0,x2=0,x3=0,x4=0;
-    public void scale(MotionEvent event) {
 
+    /**
+     * 双指放大，同时放大或者缩小
+     */
+
+    /**
+     * 双指放大，左指左移向左放大，右指右移向右放大
+     */
+    private float x1 = 0, x2 = 0, x3 = 0, x4 = 0;
+    private boolean fristPointInLeft = true;
+    private boolean doublePointer = false;
+    private boolean isScale = true;
+    private boolean isShowToast = true;
+
+    public void scale(MotionEvent event) {
+        isMove = true;
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_POINTER_UP:
 //                for(PointF pointF:p0){
@@ -524,8 +624,12 @@ public class BCMoreView extends View {
 //                for(PointF pointF:p2){
 //                    pointF.x*=scal;
 //                }
+                mTran[0] = 0;
+                mTran[1] = 0;
+                x3 = 0;
+                x4 = 0;
                 start();
-                isSacle=false;
+                isSacle = false;
                 postInvalidate();
 //                x1=0;
 //                x2=0;
@@ -533,27 +637,74 @@ public class BCMoreView extends View {
 //                x4=0;
                 break;
             case MotionEvent.ACTION_MOVE:
+                if (!isSacle)
+                    break;
                 float toScal = getInitLength(event);
 //                if (Float.compare(minit, 0f) == 0)
 //                    break;
 //                scal = toScal / minit;
-                for(PointF pointF:p0){
-                    pointF.x+=(x1-event.getX(0))-x3;
+                int i = 0;
+                for (PointF pointF : p0) {
+                    float x = pointF.x;
+                    if (fristPointInLeft)
+                        x += (event.getX(0) + x3 - x1);
+                    else
+                        x += (event.getX(1) + x4 - x1);
+                    if (x >= mCirX) {
+                        if (isShowToast) {
+                            Toast.makeText(context, "左边不能再缩小了！！！", Toast.LENGTH_SHORT).show();
+                            isShowToast = false;
+                        }
+                        isSacle = false;
+                    } else {
+                        pointF.x = x;
+                        list.get(i + 1).set(pointF.x - 100, pointF.y - 100, pointF.x + 100, pointF.y + 100);
+                        i++;
+                    }
                 }
-                for(PointF pointF:p2){
-                    pointF.x+=(x2-event.getX(1))-x4;
+                i = 0;
+                for (PointF pointF : p2) {
+                    float x = pointF.x;
+                    if (fristPointInLeft)
+                        x += (event.getX(1) + x4 - x2);
+                    else
+                        x += (event.getX(0) + x3 - x2);
+                    if (x <= mCirX) {
+                        if (isShowToast)
+                            Toast.makeText(context, "右边不能再缩小了！！！", Toast.LENGTH_SHORT).show();
+                        isSacle = false;
+                    } else {
+                        pointF.x = x;
+                        list.get(i + 1 + p0.size()).set(pointF.x - 100, pointF.y - 100, pointF.x + 100, pointF.y + 100);
+                        i++;
+                    }
                 }
-                x3=x1-event.getX(0);
-                x4=x2-event.getX(1);
-                Log.e("scal", scal + "");
+                if (fristPointInLeft) {
+                    x3 = x1 - event.getX(0);
+                    x4 = x2 - event.getX(1);
+                } else {
+                    x3 = x2 - event.getX(0);
+                    x4 = x1 - event.getX(1);
+                }
                 postInvalidate();
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
+                isSacle = true;
+                isShowToast = true;
                 if (event.getPointerCount() == 2) {
-                    x1=event.getX(0);
-                    x2=event.getX(1);
-//                    minit = getInitLength(event);
-                    isSacle=true;
+                    doublePointer = true;
+                    if (event.getX(0) > mCirX) {
+                        x2 = event.getX(0);
+                        x1 = event.getX(1);
+                        fristPointInLeft = false;
+                        Log.e("eventx", event.toString());
+                    } else {
+                        x1 = event.getX(0);
+                        x2 = event.getX(1);
+                        fristPointInLeft = true;
+                    }
+//                    minit = getXYLength(event);
+                    isSacle = true;
                     postInvalidate();
                 }
                 break;
