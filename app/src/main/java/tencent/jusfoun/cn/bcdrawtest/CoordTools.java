@@ -9,11 +9,11 @@ import android.graphics.RectF;
  */
 public class CoordTools {
 
-    public boolean checkCoord(float x,float y,RectF rectF){
-        if( (Float.compare(x, rectF.left) == 1 || Float.compare(x, rectF.left) == 0 )
-                && (Float.compare(x, rectF.right) == -1 || Float.compare(x, rectF.right) == 0 )
-                && (Float.compare(y, rectF.top) == 1 || Float.compare(y, rectF.top) == 0 )
-                && (Float.compare(y, rectF.bottom) == -1 || Float.compare(y, rectF.bottom) == 0 ) ){
+    public boolean checkCoord(float x, float y, RectF rectF) {
+        if ((Float.compare(x, rectF.left) == 1 || Float.compare(x, rectF.left) == 0)
+                && (Float.compare(x, rectF.right) == -1 || Float.compare(x, rectF.right) == 0)
+                && (Float.compare(y, rectF.top) == 1 || Float.compare(y, rectF.top) == 0)
+                && (Float.compare(y, rectF.bottom) == -1 || Float.compare(y, rectF.bottom) == 0)) {
             return true;
         }
         return false;

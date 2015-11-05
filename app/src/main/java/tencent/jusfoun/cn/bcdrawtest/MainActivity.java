@@ -16,13 +16,14 @@ public class MainActivity extends AppCompatActivity {
     private LineDrawView lineDrawView;
     private RelativeLayout relativeLayout;
     private CheckBox checkBox;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(new ImageScaleView(getApplicationContext()));
         setContentView(R.layout.activity_main);
-        lineDrawView= (LineDrawView) findViewById(R.id.bc);
-        relativeLayout= (RelativeLayout) findViewById(R.id.info);
+        lineDrawView = (LineDrawView) findViewById(R.id.bc);
+        relativeLayout = (RelativeLayout) findViewById(R.id.info);
         lineDrawView.setClickPot(new LineDrawView.OnClickPotListener() {
             @Override
             public void onClickPot() {
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        checkBox= (CheckBox) findViewById(R.id.checkbox);
+        checkBox = (CheckBox) findViewById(R.id.checkbox);
 //        BCView bcView=new BCView(this);
 //        BCTwoView bcTwoView=new BCTwoView(this);
 //        BCMoreView bcMoreView=new BCMoreView(this);

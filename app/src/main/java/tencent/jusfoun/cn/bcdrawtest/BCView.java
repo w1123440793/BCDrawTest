@@ -35,8 +35,8 @@ public class BCView extends View {
     private float anglesMax[] = new float[index * 2];
     private float cirXs[], cirxs[];
     private float cirYs[], cirys[];
-    private float bcXs[],bcYs[];
-    private float qXs[],qYs[];
+    private float bcXs[], bcYs[];
+    private float qXs[], qYs[];
     private float mRadius;
     private CirPoint cirPoint;
     private float mTran[] = new float[2];
@@ -52,19 +52,19 @@ public class BCView extends View {
 
     public BCView(Context context) {
         super(context);
-        this.context=context;
+        this.context = context;
         initView();
     }
 
     public BCView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context=context;
+        this.context = context;
         initView();
     }
 
     public BCView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context=context;
+        this.context = context;
         initView();
     }
 
@@ -72,7 +72,7 @@ public class BCView extends View {
         cirPaint = new Paint();
         cirPaint.setStyle(Paint.Style.FILL);
         cirPaint.setColor(Color.BLUE);
-        rectF=new RectF();
+        rectF = new RectF();
 
         linePaint = new Paint();
         linePaint.setColor(Color.RED);
@@ -88,8 +88,8 @@ public class BCView extends View {
         cirxs = new float[index * 2];
         cirys = new float[index * 2];
 
-        qXs=new float[index];
-        qYs=new float[index];
+        qXs = new float[index];
+        qYs = new float[index];
 
         bcXs = new float[index * 2];
         bcYs = new float[index * 2];
@@ -109,8 +109,8 @@ public class BCView extends View {
 
         mTran[0] = 0;
         mTran[1] = 0;
-        list=new ArrayList<RectF>();
-        coordTools=new CoordTools();
+        list = new ArrayList<RectF>();
+        coordTools = new CoordTools();
 
     }
 
@@ -127,11 +127,11 @@ public class BCView extends View {
         }
 
         for (int i = 0; i < index; i++) {
-            cirPoint = MathHelper.getInstance().getXY(angles[i], cirX, cirY, mRadius*0.5f);
+            cirPoint = MathHelper.getInstance().getXY(angles[i], cirX, cirY, mRadius * 0.5f);
             cirXs[i] = cirPoint.X;
             cirYs[i] = cirPoint.Y;
-            RectF rectF=new RectF();
-            rectF.set(cirXs[i ], cirYs[i ],cirXs[i ]+200, cirYs[i]+200);
+            RectF rectF = new RectF();
+            rectF.set(cirXs[i], cirYs[i], cirXs[i] + 200, cirYs[i] + 200);
             list.add(rectF);
         }
 
@@ -139,22 +139,22 @@ public class BCView extends View {
             cirPoint = MathHelper.getInstance().getXY(anglesMax[i], cirX, cirY, mRadius);
             cirxs[i] = cirPoint.X;
             cirys[i] = cirPoint.Y;
-            RectF rectF=new RectF();
-            rectF.set(cirxs[i ], cirys[i ],cirxs[i ]+50, cirys[i]+50);
+            RectF rectF = new RectF();
+            rectF.set(cirxs[i], cirys[i], cirxs[i] + 50, cirys[i] + 50);
             list.add(rectF);
         }
 
         for (int i = 0; i < index; i++) {
-            cirPoint = MathHelper.getInstance().getXY(angles[i], cirX, cirY, mRadius*0.7f);
+            cirPoint = MathHelper.getInstance().getXY(angles[i], cirX, cirY, mRadius * 0.7f);
             qXs[i] = cirPoint.X;
             qYs[i] = cirPoint.Y;
         }
 
         for (int i = 0; i < cirxs.length; i++) {
-            cirPoint=MathHelper.getInstance().getBezierCubic(cirXs[i / 2], cirYs[i / 2], cirxs[i], cirys[i], cirX, cirY, mRadius * 0.6f);
-            if (cirPoint!=null){
-                bcXs[i]=cirPoint.X;
-                bcYs[i]=cirPoint.Y;
+            cirPoint = MathHelper.getInstance().getBezierCubic(cirXs[i / 2], cirYs[i / 2], cirxs[i], cirys[i], cirX, cirY, mRadius * 0.6f);
+            if (cirPoint != null) {
+                bcXs[i] = cirPoint.X;
+                bcYs[i] = cirPoint.Y;
             }
         }
 
@@ -170,19 +170,19 @@ public class BCView extends View {
                 scale(event);
                 break;
         }
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
-                int count =0;
-                for(RectF rectF:list) {
-                    if (coordTools.checkCoord(event.getX(), event.getY(),rectF)){
+                int count = 0;
+                for (RectF rectF : list) {
+                    if (coordTools.checkCoord(event.getX(), event.getY(), rectF)) {
                         break;
                     }
                     count++;
                 }
-                if (count<index)
-                    Toast.makeText(context,"你点的第一层第"+count+"个",Toast.LENGTH_SHORT).show();
-                else if (count<30)
-                    Toast.makeText(context,"你点击的第二层第"+(count-index)+"个",Toast.LENGTH_SHORT).show();
+                if (count < index)
+                    Toast.makeText(context, "你点的第一层第" + count + "个", Toast.LENGTH_SHORT).show();
+                else if (count < 30)
+                    Toast.makeText(context, "你点击的第二层第" + (count - index) + "个", Toast.LENGTH_SHORT).show();
                 break;
         }
         return true;
@@ -193,29 +193,29 @@ public class BCView extends View {
         super.onDraw(canvas);
         canvas.save();
 //        if (mode == TRAN) {
-            if (mTran[0]<-cirX)
-                mTran[0]=-cirX;
-            if (mTran[0]>cirX)
-                mTran[0]=cirX;
-            if (mTran[1]<-cirY)
-                mTran[1]=-cirY;
-            if (mTran[1]> cirY)
-                mTran[1]= cirY;
-            canvas.translate(mTran[0], mTran[1]);
+        if (mTran[0] < -cirX)
+            mTran[0] = -cirX;
+        if (mTran[0] > cirX)
+            mTran[0] = cirX;
+        if (mTran[1] < -cirY)
+            mTran[1] = -cirY;
+        if (mTran[1] > cirY)
+            mTran[1] = cirY;
+        canvas.translate(mTran[0], mTran[1]);
 //        } else if (mode == SCAL)
         canvas.save();
-            canvas.scale(scal, scal, cirX, cirY);
+        canvas.scale(scal, scal, cirX, cirY);
         canvas.drawCircle(cirX, cirY, cirR, cirPaint);
         cirPaint.setTextSize(20);
         for (int i = 0; i < index; i++) {
-            list.get(i).offset(mTran[0],mTran[1]);
+            list.get(i).offset(mTran[0], mTran[1]);
             linePath.reset();
             linePath.moveTo(cirX, (cirY + cirR));
             if (cirXs[i] > cirX)
                 linePath.quadTo((cirX + 5), (cirY + cirR + 100), cirXs[i], cirYs[i]);
             else
                 linePath.quadTo((cirX - 5), (cirY + cirR + 100), cirXs[i], cirYs[i]);
-            if (i==6||i==7) {
+            if (i == 6 || i == 7) {
                 linePath.moveTo(cirXs[i], cirYs[i]);
 
                 linePath.cubicTo(qXs[i], qYs[i], bcXs[i * 2], bcYs[i * 2]
@@ -236,8 +236,7 @@ public class BCView extends View {
                 canvas.rotate(anglesMax[i * 2 + 1], cirxs[i * 2 + 1], cirys[i * 2 + 1]);
                 canvas.drawText("hahahahahahahahha" + i, cirxs[i * 2 + 1], cirys[i * 2 + 1], cirPaint);
                 canvas.restore();
-            }
-            else {
+            } else {
                 canvas.save();
                 canvas.rotate(angles[i], cirXs[i], cirYs[i]);
                 canvas.drawText("hahahahahahahahha" + i, cirXs[i], cirYs[i], cirPaint);
@@ -247,7 +246,7 @@ public class BCView extends View {
             canvas.drawPath(linePath, linePaint);
             cirPaint.setStyle(Paint.Style.STROKE);
             canvas.drawCircle(cirXs[i], cirYs[i], 10, cirPaint);
-            if (i==6||i==7) {
+            if (i == 6 || i == 7) {
                 canvas.drawCircle(cirxs[i * 2], cirys[i * 2], 10, cirPaint);
                 canvas.drawCircle(cirxs[i * 2 + 1], cirys[i * 2 + 1], 10, cirPaint);
             }
@@ -283,7 +282,7 @@ public class BCView extends View {
                 if (Float.compare(minit, 0f) == 0)
                     break;
                 scal = toScal / minit;
-                Log.e("scal",scal+"");
+                Log.e("scal", scal + "");
                 postInvalidate();
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:

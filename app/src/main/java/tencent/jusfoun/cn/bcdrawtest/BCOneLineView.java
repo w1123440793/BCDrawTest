@@ -140,11 +140,11 @@ public class BCOneLineView extends View {
                 switch (msg.what) {
 
                     case 1:
-                        if (lastCount==-1||lastCount==count) {
+                        if (lastCount == -1 || lastCount == count) {
                             if (!animators.get(count).isStarted() && !animators.get(count).isRunning()) {
                                 animators.get(count).start();
                             }
-                        }else {
+                        } else {
                             if (!animators.get(count).isStarted() && !animators.get(count).isRunning()) {
                                 animators.get(count).start();
                             }
@@ -158,7 +158,7 @@ public class BCOneLineView extends View {
                             lastCount = count;
                         break;
                     case 2:
-                        for(ValueAnimator v:childAnims){
+                        for (ValueAnimator v : childAnims) {
                             if (!v.isStarted() && !v.isRunning()) {
                                 v.start();
                             }
@@ -260,45 +260,45 @@ public class BCOneLineView extends View {
 
         if (isDrawChildLine) {
             path.reset();
-            if (lastCount==count){
-            for (int i = 0; i < pointFChilds.size(); i++) {
-                PointF pointChildBc = pointFChildBcs.get(i);
-                PointF pointFChild = pointFChilds.get(i);
-                ArrayList<PointF> ps=childPointLists.get(i);
-                if (count < p0.size()) {
-                    path.moveTo(pointFChild.x, pointFChild.y);
-                    if (isStartChildAnim) {
-                        for (int j = 0; j < ps.size(); j++) {
-                            path.lineTo(ps.get(j).x, ps.get(j).y);
-                            if (j == ps.size() - 1)
+            if (lastCount == count) {
+                for (int i = 0; i < pointFChilds.size(); i++) {
+                    PointF pointChildBc = pointFChildBcs.get(i);
+                    PointF pointFChild = pointFChilds.get(i);
+                    ArrayList<PointF> ps = childPointLists.get(i);
+                    if (count < p0.size()) {
+                        path.moveTo(pointFChild.x, pointFChild.y);
+                        if (isStartChildAnim) {
+                            for (int j = 0; j < ps.size(); j++) {
+                                path.lineTo(ps.get(j).x, ps.get(j).y);
+                                if (j == ps.size() - 1)
+                                    canvas.drawCircle(ps.get(j).x, ps.get(j).y, 20, paintList.get(i));
+                            }
+                        } else if (!isSacle) {
+                            int j = a;
+                            if (j < ps.size()) {
                                 canvas.drawCircle(ps.get(j).x, ps.get(j).y, 20, paintList.get(i));
+                            }
+                            path.quadTo(pointChildBc.x, pointChildBc.y, p0.get(count).x, p0.get(count).y);
                         }
-                    }else if (!isSacle) {
-                        int j = a;
-                        if (j < ps.size()) {
-                            canvas.drawCircle(ps.get(j).x, ps.get(j).y, 20, paintList.get(i));
-                        }
-                        path.quadTo(pointChildBc.x, pointChildBc.y, p0.get(count).x, p0.get(count).y);
-                    }
-                } else {
-                    path.moveTo(p2.get(count - p0.size()).x, p2.get(count - p0.size()).y);
-                    if (isStartChildAnim) {
-                        for (int j = 0; j < ps.size(); j++) {
-                            path.lineTo(ps.get(j).x, ps.get(j).y);
-                            if (j == ps.size() - 1)
+                    } else {
+                        path.moveTo(p2.get(count - p0.size()).x, p2.get(count - p0.size()).y);
+                        if (isStartChildAnim) {
+                            for (int j = 0; j < ps.size(); j++) {
+                                path.lineTo(ps.get(j).x, ps.get(j).y);
+                                if (j == ps.size() - 1)
+                                    canvas.drawCircle(ps.get(j).x, ps.get(j).y, 20, paintList.get(i));
+                            }
+                        } else if (!isSacle) {
+                            int j = a;
+                            if (j < ps.size()) {
                                 canvas.drawCircle(ps.get(j).x, ps.get(j).y, 20, paintList.get(i));
+                            }
+                            path.quadTo(pointChildBc.x, pointChildBc.y, pointFChild.x, pointFChild.y);
                         }
-                    }else if (!isSacle) {
-                        int j = a;
-                        if (j < ps.size()) {
-                            canvas.drawCircle(ps.get(j).x, ps.get(j).y, 20, paintList.get(i));
-                        }
-                    path.quadTo(pointChildBc.x, pointChildBc.y, pointFChild.x, pointFChild.y);
                     }
+                    canvas.drawPath(path, paintThree);
+                    canvas.drawCircle(pointFChild.x, pointFChild.y, mCount, cirPaint);
                 }
-                canvas.drawPath(path, paintThree);
-                canvas.drawCircle(pointFChild.x, pointFChild.y, mCount, cirPaint);
-            }
             }
         }
         canvas.restore();
@@ -405,8 +405,8 @@ public class BCOneLineView extends View {
     private boolean isDrawChildLine = false;
     private PointF pointFChild = new PointF();
     private PointF pointChildBc = new PointF();
-    private ArrayList<PointF> pointFChilds=new ArrayList<>();
-    private ArrayList<PointF> pointFChildBcs=new ArrayList<>();
+    private ArrayList<PointF> pointFChilds = new ArrayList<>();
+    private ArrayList<PointF> pointFChildBcs = new ArrayList<>();
     private int count = 0;
 
     @Override
@@ -476,7 +476,7 @@ public class BCOneLineView extends View {
         PointF cir = new PointF(mCirX, mCirY);
         for (int i = 0; i < p0.size(); i++) {
             final ArrayList<PointF> p = new ArrayList<>();
-            ValueAnimator valueAnimator=getValueAnimator(p0.get(i), p1.get(i), cir, 1000
+            ValueAnimator valueAnimator = getValueAnimator(p0.get(i), p1.get(i), cir, 1000
                     , new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -522,9 +522,9 @@ public class BCOneLineView extends View {
                             handler.sendEmptyMessage(1);
                             isClick = false;
                         }
-                        if (childAnim){
+                        if (childAnim) {
                             handler.sendEmptyMessage(2);
-                            childAnim=false;
+                            childAnim = false;
                         }
                         if (mCount < mRaius) {
                             mCount += 1f;
@@ -560,6 +560,7 @@ public class BCOneLineView extends View {
     }
 
     private float initX = 0, initY = 0;
+
     public void translate(MotionEvent event) {
         if (doublePointer) {
             doublePointer = false;
@@ -639,17 +640,17 @@ public class BCOneLineView extends View {
                         ps[0] = p0.get(count);
                         ps[1] = p1.get(count);
                         ps[2] = cir;
-                        PointF[] lsPs=new PointF[3];
-                        if (lastCount<p0.size()) {
+                        PointF[] lsPs = new PointF[3];
+                        if (lastCount < p0.size()) {
                             lsPs[0] = p0.get(lastCount);
                             lsPs[1] = p1.get(lastCount);
                             lsPs[2] = cir;
                             list.set(lastCount + 1, new RectF(p0.get(lastCount).x - 50, p0.get(lastCount).y - 50, p0.get(lastCount).x + 50, p0.get(lastCount).y + 50));
-                        }else {
-                            lsPs[2] = p2.get(lastCount-p0.size());
-                            lsPs[1] = p3.get(lastCount-p0.size());
+                        } else {
+                            lsPs[2] = p2.get(lastCount - p0.size());
+                            lsPs[1] = p3.get(lastCount - p0.size());
                             lsPs[0] = cir;
-                            list.set(lastCount + 1, new RectF(p2.get(lastCount-p0.size()).x - 50, p2.get(lastCount-p0.size()).y - 50, p2.get(lastCount-p0.size()).x + 50, p2.get(lastCount-p0.size()).y + 50));
+                            list.set(lastCount + 1, new RectF(p2.get(lastCount - p0.size()).x - 50, p2.get(lastCount - p0.size()).y - 50, p2.get(lastCount - p0.size()).x + 50, p2.get(lastCount - p0.size()).y + 50));
                         }
                         list.set(count + 1, new RectF(p0.get(count).x - 50, p0.get(count).y - 50, p0.get(count).x + 50, p0.get(count).y + 50));
                         final ArrayList<PointF> p = new ArrayList<>();
@@ -659,7 +660,7 @@ public class BCOneLineView extends View {
                             @Override
                             public void onAnimationUpdate(ValueAnimator animation) {
                                 pointf = (PointF) animation.getAnimatedValue();
-                            Log.e("456",pointf.x+"\n"+pointf.y);
+                                Log.e("456", pointf.x + "\n" + pointf.y);
                                 PointF point = new PointF(pointf.x, pointf.y);
                                 if (pointf.x != mCirX) {
                                     if (!p.contains(point))
@@ -689,31 +690,30 @@ public class BCOneLineView extends View {
                     }
                     isClick = true;
                     cirPoint = MathHelper.getInstance().getXY(160, p0.get(count).x, p0.get(count).y, 9 * mRaius);
-                    pointFChilds.add(new PointF(cirPoint.X,cirPoint.Y));
+                    pointFChilds.add(new PointF(cirPoint.X, cirPoint.Y));
                     cirPoint = MathHelper.getInstance().getXY(200, p0.get(count).x, p0.get(count).y, 9 * mRaius);
-                    pointFChilds.add(new PointF(cirPoint.X,cirPoint.Y));
+                    pointFChilds.add(new PointF(cirPoint.X, cirPoint.Y));
                     cirPoint = MathHelper.getInstance().getXY(240, p0.get(count).x, p0.get(count).y, 9 * mRaius);
-                    pointFChilds.add(new PointF(cirPoint.X,cirPoint.Y));
+                    pointFChilds.add(new PointF(cirPoint.X, cirPoint.Y));
                     cirPoint = MathHelper.getInstance().getBezierQuad(pointFChilds.get(0).x - p0.get(count).x, pointFChilds.get(0).y - p0.get(count).y
                             , p0.get(count).x, p0.get(count).y, 5f * mRaius);
-                    pointFChildBcs.add(new PointF(cirPoint.X,cirPoint.Y));
+                    pointFChildBcs.add(new PointF(cirPoint.X, cirPoint.Y));
                     cirPoint = MathHelper.getInstance().getBezierQuad(pointFChilds.get(1).x - p0.get(count).x, pointFChilds.get(1).y - p0.get(count).y
                             , p0.get(count).x, p0.get(count).y, 5f * mRaius);
-                    pointFChildBcs.add(new PointF(cirPoint.X,cirPoint.Y));
+                    pointFChildBcs.add(new PointF(cirPoint.X, cirPoint.Y));
                     cirPoint = MathHelper.getInstance().getBezierQuad(pointFChilds.get(2).x - p0.get(count).x, pointFChilds.get(2).y - p0.get(count).y
                             , p0.get(count).x, p0.get(count).y, 5f * mRaius);
-                    pointFChildBcs.add(new PointF(cirPoint.X,cirPoint.Y));
+                    pointFChildBcs.add(new PointF(cirPoint.X, cirPoint.Y));
                     childAnimator();
-                } else
-                {
+                } else {
                     if (lastCount == -1) {
                         p0.get(count).x -= value * 5;
                     } else if (lastCount == count)
                         p0.get(count).x += value * 5;
-                    else if (lastCount>=p0.size()){
+                    else if (lastCount >= p0.size()) {
                         p0.get(count).x -= value * 5;
-                        p2.get(lastCount-p0.size()).x -= value * 5;
-                    }else {
+                        p2.get(lastCount - p0.size()).x -= value * 5;
+                    } else {
                         p0.get(count).x -= value * 5;
                         p0.get(lastCount).x += value * 5;
                     }
@@ -723,6 +723,7 @@ public class BCOneLineView extends View {
         });
         valueAnimator.start();
     }
+
     public void lineRightStart() {
         pointFChildBcs.clear();
         pointFChilds.clear();
@@ -738,15 +739,15 @@ public class BCOneLineView extends View {
                             mTran[0] = 0;
                             mTran[1] = 0;
                         } else if (lastCount == -1) {
-                            mTran[0] = mCirX - p2.get(count-p0.size()).x;
-                            mTran[1] = mCirY - p2.get(count-p0.size()).y;
+                            mTran[0] = mCirX - p2.get(count - p0.size()).x;
+                            mTran[1] = mCirY - p2.get(count - p0.size()).y;
                         }
                         PointF cir = new PointF(mCirX, mCirY);
                         PointF[] ps = new PointF[3];
-                        ps[2] = p2.get(count-p0.size());
-                        ps[1] = p3.get(count-p0.size());
+                        ps[2] = p2.get(count - p0.size());
+                        ps[1] = p3.get(count - p0.size());
                         ps[0] = cir;
-                        list.set(count + 1, new RectF(p2.get(count-p0.size()).x - 50, p2.get(count-p0.size()).y - 50, p2.get(count-p0.size()).x + 50, p2.get(count-p0.size()).y + 50));
+                        list.set(count + 1, new RectF(p2.get(count - p0.size()).x - 50, p2.get(count - p0.size()).y - 50, p2.get(count - p0.size()).x + 50, p2.get(count - p0.size()).y + 50));
                         final ArrayList<PointF> p = new ArrayList<>();
                         ValueAnimator valueAnimator = new ValueAnimator().ofObject(new BezierTypeEvaluator(ps), new PointF());
                         valueAnimator.setDuration(1000);
@@ -765,26 +766,26 @@ public class BCOneLineView extends View {
                         lists.set(count, p);
                         animators.set(count, valueAnimator);
                     } else {
-                        mTran[0] = mCirX - p2.get(count-p0.size()).x;
-                        mTran[1] = mCirY - p2.get(count-p0.size()).y;
+                        mTran[0] = mCirX - p2.get(count - p0.size()).x;
+                        mTran[1] = mCirY - p2.get(count - p0.size()).y;
                         PointF cir = new PointF(mCirX, mCirY);
                         PointF[] ps = new PointF[3];
-                        ps[2] = p2.get(count-p0.size());
-                        ps[1] = p3.get(count-p0.size());
+                        ps[2] = p2.get(count - p0.size());
+                        ps[1] = p3.get(count - p0.size());
                         ps[0] = cir;
-                        PointF[] lsPs=new PointF[3];
-                        if (lastCount<p0.size()) {
+                        PointF[] lsPs = new PointF[3];
+                        if (lastCount < p0.size()) {
                             lsPs[0] = p0.get(lastCount);
                             lsPs[1] = p1.get(lastCount);
                             lsPs[2] = cir;
                             list.set(lastCount + 1, new RectF(p0.get(lastCount).x - 50, p0.get(lastCount).y - 50, p0.get(lastCount).x + 50, p0.get(lastCount).y + 50));
-                        }else {
+                        } else {
                             lsPs[2] = p2.get(lastCount - p0.size());
                             lsPs[1] = p3.get(lastCount - p0.size());
                             lsPs[0] = cir;
                             list.set(lastCount + 1, new RectF(p2.get(lastCount - p0.size()).x - 50, p2.get(lastCount - p0.size()).y - 50, p2.get(lastCount - p0.size()).x + 50, p2.get(lastCount - p0.size()).y + 50));
                         }
-                        list.set(count + 1, new RectF(p2.get(count-p0.size()).x - 50, p2.get(count-p0.size()).y - 50, p2.get(count-p0.size()).x + 50, p2.get(count-p0.size()).y + 50));
+                        list.set(count + 1, new RectF(p2.get(count - p0.size()).x - 50, p2.get(count - p0.size()).y - 50, p2.get(count - p0.size()).x + 50, p2.get(count - p0.size()).y + 50));
                         final ArrayList<PointF> p = new ArrayList<>();
                         ValueAnimator valueAnimator = new ValueAnimator().ofObject(new BezierTypeEvaluator(ps), new PointF());
                         valueAnimator.setDuration(1000);
@@ -821,34 +822,33 @@ public class BCOneLineView extends View {
                         animators.set(lastCount, lsvalueAnimator);
                     }
                     isClick = true;
-                    cirPoint = MathHelper.getInstance().getXY(320, p2.get(count-p0.size()).x, p2.get(count-p0.size()).y, 9 * mRaius);
-                    pointFChilds.add(new PointF(cirPoint.X,cirPoint.Y));
-                    cirPoint = MathHelper.getInstance().getXY(10, p2.get(count-p0.size()).x, p2.get(count-p0.size()).y, 9 * mRaius);
-                    pointFChilds.add(new PointF(cirPoint.X,cirPoint.Y));
-                    cirPoint = MathHelper.getInstance().getXY(60, p2.get(count-p0.size()).x, p2.get(count-p0.size()).y, 9 * mRaius);
-                    pointFChilds.add(new PointF(cirPoint.X,cirPoint.Y));
-                    cirPoint = MathHelper.getInstance().getBezierQuad(pointFChilds.get(0).x - p2.get(count-p0.size()).x, pointFChilds.get(0).y - p2.get(count-p0.size()).y
-                            , p2.get(count-p0.size()).x, p2.get(count-p0.size()).y, 5f * mRaius);
-                    pointFChildBcs.add(new PointF(cirPoint.X,cirPoint.Y));
-                    cirPoint = MathHelper.getInstance().getBezierQuad(pointFChilds.get(1).x - p2.get(count-p0.size()).x, pointFChilds.get(1).y - p2.get(count-p0.size()).y
-                            , p2.get(count-p0.size()).x, p2.get(count-p0.size()).y, 5f * mRaius);
-                    pointFChildBcs.add(new PointF(cirPoint.X,cirPoint.Y));
-                    cirPoint = MathHelper.getInstance().getBezierQuad(pointFChilds.get(2).x - p2.get(count-p0.size()).x, pointFChilds.get(2).y - p2.get(count-p0.size()).y
-                            , p2.get(count-p0.size()).x, p2.get(count-p0.size()).y, 5f * mRaius);
-                    pointFChildBcs.add(new PointF(cirPoint.X,cirPoint.Y));
+                    cirPoint = MathHelper.getInstance().getXY(320, p2.get(count - p0.size()).x, p2.get(count - p0.size()).y, 9 * mRaius);
+                    pointFChilds.add(new PointF(cirPoint.X, cirPoint.Y));
+                    cirPoint = MathHelper.getInstance().getXY(10, p2.get(count - p0.size()).x, p2.get(count - p0.size()).y, 9 * mRaius);
+                    pointFChilds.add(new PointF(cirPoint.X, cirPoint.Y));
+                    cirPoint = MathHelper.getInstance().getXY(60, p2.get(count - p0.size()).x, p2.get(count - p0.size()).y, 9 * mRaius);
+                    pointFChilds.add(new PointF(cirPoint.X, cirPoint.Y));
+                    cirPoint = MathHelper.getInstance().getBezierQuad(pointFChilds.get(0).x - p2.get(count - p0.size()).x, pointFChilds.get(0).y - p2.get(count - p0.size()).y
+                            , p2.get(count - p0.size()).x, p2.get(count - p0.size()).y, 5f * mRaius);
+                    pointFChildBcs.add(new PointF(cirPoint.X, cirPoint.Y));
+                    cirPoint = MathHelper.getInstance().getBezierQuad(pointFChilds.get(1).x - p2.get(count - p0.size()).x, pointFChilds.get(1).y - p2.get(count - p0.size()).y
+                            , p2.get(count - p0.size()).x, p2.get(count - p0.size()).y, 5f * mRaius);
+                    pointFChildBcs.add(new PointF(cirPoint.X, cirPoint.Y));
+                    cirPoint = MathHelper.getInstance().getBezierQuad(pointFChilds.get(2).x - p2.get(count - p0.size()).x, pointFChilds.get(2).y - p2.get(count - p0.size()).y
+                            , p2.get(count - p0.size()).x, p2.get(count - p0.size()).y, 5f * mRaius);
+                    pointFChildBcs.add(new PointF(cirPoint.X, cirPoint.Y));
                     childAnimator();
-                } else
-                {
+                } else {
                     if (lastCount == -1) {
-                        p2.get(count-p0.size()).x += value * 5;
-                    }else if (lastCount == count)
-                        p2.get(count-p0.size()).x -= value * 5;
-                    else if (lastCount<p0.size()){
-                        p2.get(count-p0.size()).x += value * 5;
-                        p0.get(lastCount).x+=value*5;
-                    }else {
-                        p2.get(count-p0.size()).x += value * 5;
-                        p2.get(lastCount-p0.size()).x -= value * 5;
+                        p2.get(count - p0.size()).x += value * 5;
+                    } else if (lastCount == count)
+                        p2.get(count - p0.size()).x -= value * 5;
+                    else if (lastCount < p0.size()) {
+                        p2.get(count - p0.size()).x += value * 5;
+                        p0.get(lastCount).x += value * 5;
+                    } else {
+                        p2.get(count - p0.size()).x += value * 5;
+                        p2.get(lastCount - p0.size()).x -= value * 5;
                     }
 
                 }
@@ -861,10 +861,11 @@ public class BCOneLineView extends View {
     /**
      * 双指放大，x,y均放大
      */
-    private float x5=0,x6=0;
-    private float scaleIndex=50;
-    private VelocityTracker velocityTracker=VelocityTracker.obtain();
-    public void scaleThree(MotionEvent event){
+    private float x5 = 0, x6 = 0;
+    private float scaleIndex = 50;
+    private VelocityTracker velocityTracker = VelocityTracker.obtain();
+
+    public void scaleThree(MotionEvent event) {
         isMove = true;
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_POINTER_UP:
@@ -880,22 +881,22 @@ public class BCOneLineView extends View {
                 if (!isSacle)
                     break;
                 int i = 0;
-                x2=getInitLength(event);
-                x5=x2/x1;
+                x2 = getInitLength(event);
+                x5 = x2 / x1;
                 velocityTracker.addMovement(event);
-                int velocity= (int) velocityTracker.getXVelocity();
-                Log.e("velocity",velocity+"");
+                int velocity = (int) velocityTracker.getXVelocity();
+                Log.e("velocity", velocity + "");
 //                if (Math.abs(x2-x1)<scaleIndex)
-                if (velocity<0)
+                if (velocity < 0)
                     break;
-                x1=x2;
-                x3=(x1-x2)/2;
+                x1 = x2;
+                x3 = (x1 - x2) / 2;
                 for (PointF pointF : p0) {
-                    float x = pointF.x-mCirX;
-                    float y=pointF.y-mCirY;
+                    float x = pointF.x - mCirX;
+                    float y = pointF.y - mCirY;
 
-                    x=x*x5+mCirX;
-                    y=y*x5+mCirY;
+                    x = x * x5 + mCirX;
+                    y = y * x5 + mCirY;
 //                        x += ( x3 - x4);
                     if (x >= mCirX) {
                         if (isShowToast) {
@@ -905,61 +906,61 @@ public class BCOneLineView extends View {
                         isSacle = false;
                     } else {
                         pointF.x = x;
-                        pointF.y=y;
+                        pointF.y = y;
                         list.get(i + 1).set(pointF.x - 100, pointF.y - 100, pointF.x + 100, pointF.y + 100);
                         i++;
                     }
                 }
                 i = 0;
                 for (PointF pointF : p2) {
-                    float x = pointF.x-mCirX;
-                    float y=pointF.y-mCirY;
+                    float x = pointF.x - mCirX;
+                    float y = pointF.y - mCirY;
 
-                    x=x*x5+mCirX;
-                    y=y*x5+mCirY;
+                    x = x * x5 + mCirX;
+                    y = y * x5 + mCirY;
                     if (x <= mCirX) {
                         if (isShowToast)
                             Toast.makeText(context, "右边不能再缩小了！！！", Toast.LENGTH_SHORT).show();
                         isSacle = false;
                     } else {
                         pointF.x = x;
-                        pointF.y=y;
+                        pointF.y = y;
                         list.get(i + 1 + p0.size()).set(pointF.x - 100, pointF.y - 100, pointF.x + 100, pointF.y + 100);
                         i++;
                     }
                 }
                 pointFChildBcs.clear();
-                if (count<p0.size()){
-                    for (PointF point:pointFChilds){
-                        float x = point.x-mCirX;
-                        float y=point.y-mCirY;
+                if (count < p0.size()) {
+                    for (PointF point : pointFChilds) {
+                        float x = point.x - mCirX;
+                        float y = point.y - mCirY;
 
-                        x=x*x5+mCirX;
-                        y=y*x5+mCirY;
+                        x = x * x5 + mCirX;
+                        y = y * x5 + mCirY;
                         point.x = x;
-                        point.y=y;
+                        point.y = y;
                         cirPoint = MathHelper.getInstance().getBezierQuad(point.x - p0.get(count).x, point.y - p0.get(count).y
                                 , p0.get(count).x, p0.get(count).y, 5f * mRaius);
-                        pointFChildBcs.add(new PointF(cirPoint.X,cirPoint.Y));
+                        pointFChildBcs.add(new PointF(cirPoint.X, cirPoint.Y));
                     }
                     childAnimator();
-                }else {
-                    for (PointF point:pointFChilds){
-                        float x = point.x-mCirX;
-                        float y=point.y-mCirY;
+                } else {
+                    for (PointF point : pointFChilds) {
+                        float x = point.x - mCirX;
+                        float y = point.y - mCirY;
 
-                        x=x*x5+mCirX;
-                        y=y*x5+mCirY;
+                        x = x * x5 + mCirX;
+                        y = y * x5 + mCirY;
                         point.x = x;
-                        point.y=y;
+                        point.y = y;
                         cirPoint = MathHelper.getInstance().getBezierQuad(pointFChilds.get(2).x - point.x, pointFChilds.get(2).y - point.y
-                                , p2.get(count-p0.size()).x, p2.get(count-p0.size()).y, 5f * mRaius);
-                        pointFChildBcs.add(new PointF(cirPoint.X,cirPoint.Y));
+                                , p2.get(count - p0.size()).x, p2.get(count - p0.size()).y, 5f * mRaius);
+                        pointFChildBcs.add(new PointF(cirPoint.X, cirPoint.Y));
                     }
                     childAnimator();
                 }
-                Log.e("x3x4","x3:"+x3+"\n"+"x4:"+x4);
-                x4=x3;
+                Log.e("x3x4", "x3:" + x3 + "\n" + "x4:" + x4);
+                x4 = x3;
                 postInvalidate();
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -981,7 +982,7 @@ public class BCOneLineView extends View {
      * 双指放大，同时放大或者缩小
      */
 
-    public void scaleTwo(MotionEvent event){
+    public void scaleTwo(MotionEvent event) {
         isMove = true;
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_POINTER_UP:
@@ -996,18 +997,18 @@ public class BCOneLineView extends View {
                 if (!isSacle)
                     break;
                 int i = 0;
-                x2=getInitLength(event);
-                x5=x2/x1;
-                if (Math.abs(x2-x1)<150)
+                x2 = getInitLength(event);
+                x5 = x2 / x1;
+                if (Math.abs(x2 - x1) < 150)
                     break;
-                x1=x2;
-                x3=(x1-x2)/2;
+                x1 = x2;
+                x3 = (x1 - x2) / 2;
                 for (PointF pointF : p0) {
-                    float x = pointF.x-mCirX;
-                    float y=pointF.y-mCirY;
+                    float x = pointF.x - mCirX;
+                    float y = pointF.y - mCirY;
 
-                    x=x*x5+mCirX;
-                    y=y*x5+mCirY;
+                    x = x * x5 + mCirX;
+                    y = y * x5 + mCirY;
 //                        x += ( x3 - x4);
                     if (x >= mCirX) {
                         if (isShowToast) {
@@ -1017,7 +1018,7 @@ public class BCOneLineView extends View {
                         isSacle = false;
                     } else {
                         pointF.x = x;
-                        pointF.y=y;
+                        pointF.y = y;
                         list.get(i + 1).set(pointF.x - 100, pointF.y - 100, pointF.x + 100, pointF.y + 100);
                         i++;
                     }
@@ -1025,7 +1026,7 @@ public class BCOneLineView extends View {
                 i = 0;
                 for (PointF pointF : p2) {
                     float x = pointF.x;
-                        x -= ( x3 - x4);
+                    x -= (x3 - x4);
                     if (x <= mCirX) {
                         if (isShowToast)
                             Toast.makeText(context, "右边不能再缩小了！！！", Toast.LENGTH_SHORT).show();
@@ -1037,29 +1038,29 @@ public class BCOneLineView extends View {
                     }
                 }
                 pointFChildBcs.clear();
-                if (count<p0.size()){
-                    for (PointF point:pointFChilds){
+                if (count < p0.size()) {
+                    for (PointF point : pointFChilds) {
                         float x = point.x;
-                            x += ( x3 - x4);
+                        x += (x3 - x4);
                         point.x = x;
                         cirPoint = MathHelper.getInstance().getBezierQuad(point.x - p0.get(count).x, point.y - p0.get(count).y
                                 , p0.get(count).x, p0.get(count).y, 5f * mRaius);
-                        pointFChildBcs.add(new PointF(cirPoint.X,cirPoint.Y));
+                        pointFChildBcs.add(new PointF(cirPoint.X, cirPoint.Y));
                     }
                     childAnimator();
-                }else {
-                    for (PointF point:pointFChilds){
+                } else {
+                    for (PointF point : pointFChilds) {
                         float x = point.x;
-                            x -= ( x3 - x4);
+                        x -= (x3 - x4);
                         point.x = x;
                         cirPoint = MathHelper.getInstance().getBezierQuad(pointFChilds.get(2).x - point.x, pointFChilds.get(2).y - point.y
-                                , p2.get(count-p0.size()).x, p2.get(count-p0.size()).y, 5f * mRaius);
-                        pointFChildBcs.add(new PointF(cirPoint.X,cirPoint.Y));
+                                , p2.get(count - p0.size()).x, p2.get(count - p0.size()).y, 5f * mRaius);
+                        pointFChildBcs.add(new PointF(cirPoint.X, cirPoint.Y));
                     }
                     childAnimator();
                 }
-                Log.e("x3x4","x3:"+x3+"\n"+"x4:"+x4);
-                x4=x3;
+                Log.e("x3x4", "x3:" + x3 + "\n" + "x4:" + x4);
+                x4 = x3;
                 postInvalidate();
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
@@ -1067,7 +1068,7 @@ public class BCOneLineView extends View {
                 isShowToast = true;
                 if (event.getPointerCount() == 2) {
                     doublePointer = true;
-                        x1 = getInitLength(event);
+                    x1 = getInitLength(event);
 //                    minit = getInitLength(event);
                     isSacle = true;
                     postInvalidate();
@@ -1096,7 +1097,7 @@ public class BCOneLineView extends View {
                 start();
                 isSacle = false;
                 postInvalidate();
-                scal=2.0f;
+                scal = 2.0f;
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (!isSacle)
@@ -1138,8 +1139,8 @@ public class BCOneLineView extends View {
                     }
                 }
                 pointFChildBcs.clear();
-                if (count<p0.size()){
-                    for (PointF point:pointFChilds){
+                if (count < p0.size()) {
+                    for (PointF point : pointFChilds) {
                         float x = point.x;
                         if (fristPointInLeft)
                             x += (event.getX(0) + x3 - x1);
@@ -1148,11 +1149,11 @@ public class BCOneLineView extends View {
                         point.x = x;
                         cirPoint = MathHelper.getInstance().getBezierQuad(point.x - p0.get(count).x, point.y - p0.get(count).y
                                 , p0.get(count).x, p0.get(count).y, 5f * mRaius);
-                        pointFChildBcs.add(new PointF(cirPoint.X,cirPoint.Y));
+                        pointFChildBcs.add(new PointF(cirPoint.X, cirPoint.Y));
                     }
                     childAnimator();
-                }else {
-                    for (PointF point:pointFChilds){
+                } else {
+                    for (PointF point : pointFChilds) {
                         float x = point.x;
                         if (fristPointInLeft)
                             x += (event.getX(1) + x4 - x2);
@@ -1160,8 +1161,8 @@ public class BCOneLineView extends View {
                             x += (event.getX(0) + x3 - x2);
                         point.x = x;
                         cirPoint = MathHelper.getInstance().getBezierQuad(pointFChilds.get(2).x - point.x, pointFChilds.get(2).y - point.y
-                                , p2.get(count-p0.size()).x, p2.get(count-p0.size()).y, 5f * mRaius);
-                        pointFChildBcs.add(new PointF(cirPoint.X,cirPoint.Y));
+                                , p2.get(count - p0.size()).x, p2.get(count - p0.size()).y, 5f * mRaius);
+                        pointFChildBcs.add(new PointF(cirPoint.X, cirPoint.Y));
                     }
                     childAnimator();
                 }
@@ -1203,39 +1204,40 @@ public class BCOneLineView extends View {
         return (float) Math.sqrt(x * x + y * y);
     }
 
-    public ValueAnimator getValueAnimator(PointF p0,PointF p1,PointF p2,int duration
-    ,ValueAnimator.AnimatorUpdateListener listener){
-        PointF[] ps=new PointF[3];
-        ps[0]=p0;
-        ps[1]=p1;
-        ps[2]=p2;
-        ValueAnimator valueAnimator=ValueAnimator.ofObject(new BezierTypeEvaluator(ps),new PointF());
+    public ValueAnimator getValueAnimator(PointF p0, PointF p1, PointF p2, int duration
+            , ValueAnimator.AnimatorUpdateListener listener) {
+        PointF[] ps = new PointF[3];
+        ps[0] = p0;
+        ps[1] = p1;
+        ps[2] = p2;
+        ValueAnimator valueAnimator = ValueAnimator.ofObject(new BezierTypeEvaluator(ps), new PointF());
         valueAnimator.setDuration(duration);
         valueAnimator.addUpdateListener(listener);
         return valueAnimator;
     }
 
-    private ArrayList<ValueAnimator> childAnims=new ArrayList<>();
-    private ArrayList<ArrayList<PointF>> childPointLists=new ArrayList<>();
-    private boolean isStartChildAnim=false;
-    private boolean childAnim=false;
-    public void childAnimator(){
+    private ArrayList<ValueAnimator> childAnims = new ArrayList<>();
+    private ArrayList<ArrayList<PointF>> childPointLists = new ArrayList<>();
+    private boolean isStartChildAnim = false;
+    private boolean childAnim = false;
+
+    public void childAnimator() {
         childAnims.clear();
         childPointLists.clear();
-        if (count<p0.size()) {
+        if (count < p0.size()) {
             for (int i = 0; i < pointFChilds.size(); i++) {
-                final ArrayList<PointF> p=new ArrayList<>();
+                final ArrayList<PointF> p = new ArrayList<>();
                 ValueAnimator valueAnimator = getValueAnimator(pointFChilds.get(i), pointFChildBcs.get(i), p0.get(count)
                         , 1000, new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
-                        pointf= (PointF) animation.getAnimatedValue();
-                        if (animation.getCurrentPlayTime()>=1000)
-                            isStartChildAnim=false;
-                        PointF point=new PointF(pointf.x,pointf.y);
+                        pointf = (PointF) animation.getAnimatedValue();
+                        if (animation.getCurrentPlayTime() >= 1000)
+                            isStartChildAnim = false;
+                        PointF point = new PointF(pointf.x, pointf.y);
 
-                            if (!p.contains(point))
-                                p.add(point);
+                        if (!p.contains(point))
+                            p.add(point);
 
 
                     }
@@ -1243,28 +1245,27 @@ public class BCOneLineView extends View {
                 childAnims.add(valueAnimator);
                 childPointLists.add(p);
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < pointFChilds.size(); i++) {
-                final ArrayList<PointF> p=new ArrayList<>();
-                ValueAnimator valueAnimator=getValueAnimator(p2.get(count-p0.size()),pointFChildBcs.get(i),pointFChilds.get(i)
-                ,1000,new ValueAnimator.AnimatorUpdateListener(){
+                final ArrayList<PointF> p = new ArrayList<>();
+                ValueAnimator valueAnimator = getValueAnimator(p2.get(count - p0.size()), pointFChildBcs.get(i), pointFChilds.get(i)
+                        , 1000, new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
-                        if (animation.getCurrentPlayTime()>=1000)
-                            isStartChildAnim=false;
-                        pointf= (PointF) animation.getAnimatedValue();
-                        PointF point=new PointF(pointf.x,pointf.y);
-                            if (!p.contains(point))
-                                p.add(point);
+                        if (animation.getCurrentPlayTime() >= 1000)
+                            isStartChildAnim = false;
+                        pointf = (PointF) animation.getAnimatedValue();
+                        PointF point = new PointF(pointf.x, pointf.y);
+                        if (!p.contains(point))
+                            p.add(point);
                     }
                 });
                 childAnims.add(valueAnimator);
                 childPointLists.add(p);
             }
         }
-        childAnim=true;
-        isStartChildAnim=true;
+        childAnim = true;
+        isStartChildAnim = true;
     }
 
 }

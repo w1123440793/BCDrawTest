@@ -34,6 +34,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class LineDrawView extends LineBaseView {
 
     private static final String TAG = "LineDrawView";
+
     public LineDrawView(Context context) {
         super(context);
     }
@@ -41,6 +42,7 @@ public class LineDrawView extends LineBaseView {
     public LineDrawView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
     public LineDrawView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
@@ -64,13 +66,13 @@ public class LineDrawView extends LineBaseView {
                 path.lineTo(leftLines.get(i).x, leftLines.get(i).y);
                 canvas.drawPath(path, leftPaints.get(i));
                 float arc = leftAngles[i] / 180f;
-                if (clickCount!=i){
+                if (clickCount != i) {
                     canvas.save();
                     canvas.rotate(leftAngles[i] + 180, (leftLines.get(i).x), (leftLines.get(i).y + 12));
                     canvas.drawText(leftInfo.get(i), (leftLines.get(i).x - 80), (leftLines.get(i).y + 12), leftPaint);
                     canvas.restore();
                 }
-                if (!isDrawChildLine&&clickCount==i) {
+                if (!isDrawChildLine && clickCount == i) {
                     canvas.save();
                     canvas.rotate(leftAngles[i] + 180, (leftLines.get(i).x), (leftLines.get(i).y + 12));
                     canvas.drawText(leftInfo.get(i), (leftLines.get(i).x - 80), (leftLines.get(i).y + 12), leftPaint);
@@ -87,21 +89,19 @@ public class LineDrawView extends LineBaseView {
                     int startWidth = Integer.parseInt(startWidthList.get(j));
                     paint.setAlpha(alpha);
                     canvas.drawCircle(mCir.x, mCir.y, startWidth, paint);
-                    Log.e(TAG,startWidth+"");
+                    Log.e(TAG, startWidth + "");
                     //同心圆扩散
-                    if ( alpha > 0 && startWidth < maxWidth)
-                    {
-                        alphaList.set(j, (alpha-2)+"");
-                        startWidthList.set(j, (startWidth+1)+"");
+                    if (alpha > 0 && startWidth < maxWidth) {
+                        alphaList.set(j, (alpha - 2) + "");
+                        startWidthList.set(j, (startWidth + 1) + "");
                     }
                 }
-                if (Integer.parseInt(startWidthList.get(startWidthList.size() - 1)) == (50+maxWidth / 5)) {
+                if (Integer.parseInt(startWidthList.get(startWidthList.size() - 1)) == (50 + maxWidth / 5)) {
                     alphaList.add("255");
                     startWidthList.add("50");
                 }
                 //同心圆数量达到3个，删除最外层圆
-                if(startWidthList.size()==3)
-                {
+                if (startWidthList.size() == 3) {
                     startWidthList.remove(0);
                     alphaList.remove(0);
                 }
@@ -145,14 +145,14 @@ public class LineDrawView extends LineBaseView {
             if (isAnimStop) {
                 path.lineTo(rightLines.get(i).x, rightLines.get(i).y);
                 canvas.drawPath(path, rightPaints.get(i));
-                if (clickCount-leftCount!=i) {
+                if (clickCount - leftCount != i) {
                     canvas.save();
                     canvas.rotate(rightAngles[i], rightLines.get(i).x, rightLines.get(i).y + 12);
                     canvas.drawText(rightInfo.get(i), rightLines.get(i).x + 80, rightLines.get(i).y + 12, rightPaint);
                     canvas.restore();
                 }
 
-                if (!isDrawChildLine&&clickCount-leftCount==i) {
+                if (!isDrawChildLine && clickCount - leftCount == i) {
                     canvas.save();
                     canvas.rotate(rightAngles[i], rightLines.get(i).x, rightLines.get(i).y + 12);
                     canvas.drawText(rightInfo.get(i), rightLines.get(i).x + 80, rightLines.get(i).y + 12, rightPaint);
@@ -212,18 +212,18 @@ public class LineDrawView extends LineBaseView {
                         for (int j = 0; j < list.size(); j++) {
                             path.lineTo(list.get(j).x, list.get(j).y);
                             if (j == list.size() - 1) {
-                                if (i<leftChildCount)
+                                if (i < leftChildCount)
                                     canvas.drawCircle(list.get(j).x, list.get(j).y, 30, leftPaints.get(i));
                                 else
                                     canvas.drawCircle(list.get(j).x, list.get(j).y, 30, rightPaints.get(i));
                                 list.remove(j);
                                 if (j - 1 >= 0)
                                     list.remove(j - 1);
-                                if(j-2>=0)
-                                    list.remove(j-2);
+                                if (j - 2 >= 0)
+                                    list.remove(j - 2);
                             }
                         }
-                        if (i<leftChildCount)
+                        if (i < leftChildCount)
                             canvas.drawPath(path, leftPaints.get(i));
                         else {
                             canvas.drawPath(path, rightPaints.get(i));
@@ -239,8 +239,8 @@ public class LineDrawView extends LineBaseView {
                             path.moveTo(leftLines.get(clickCount).x, leftLines.get(clickCount).y);
                             path.lineTo(childList.get(i).x, childList.get(i).y);
                             canvas.save();
-                            canvas.rotate(childAngles[i]+180, childList.get(i).x, childList.get(i).y);
-                            canvas.drawText("第" + i + "个点", childList.get(i).x -80, childList.get(i).y, childPaints.get(i));
+                            canvas.rotate(childAngles[i] + 180, childList.get(i).x, childList.get(i).y);
+                            canvas.drawText("第" + i + "个点", childList.get(i).x - 80, childList.get(i).y, childPaints.get(i));
                             canvas.restore();
 
                         } else {
@@ -304,12 +304,12 @@ public class LineDrawView extends LineBaseView {
                             }
 
                             canvas.save();
-                            canvas.translate(leftLines.get(clickCount).x, leftLines.get(clickCount).y-30);
+                            canvas.translate(leftLines.get(clickCount).x, leftLines.get(clickCount).y - 30);
                             leftStaticLayout.get(clickCount).draw(canvas);
                             canvas.restore();
 
                         } else {
-                            canvas.drawCircle(rightLines.get(clickCount -leftCount).x, rightLines.get(clickCount - leftCount).y, 50, mCirPaint);
+                            canvas.drawCircle(rightLines.get(clickCount - leftCount).x, rightLines.get(clickCount - leftCount).y, 50, mCirPaint);
                             if (mCirBitmap != null && !mCirBitmap.isRecycled()) {
                                 mCirMatrixChild.setScale(mRaiusCount / 50f, mRaiusCount / 50f, mCirBitmap.getWidth() / 2, mCirBitmap.getHeight() / 2);
                                 mCirMatrixChild.postTranslate(rightLines.get(clickCount - leftCount).x - mCirBitmap.getWidth() / 2
@@ -318,7 +318,7 @@ public class LineDrawView extends LineBaseView {
                             }
 
                             canvas.save();
-                            canvas.translate(rightLines.get(clickCount - leftCount).x, rightLines.get(clickCount - leftCount).y-30);
+                            canvas.translate(rightLines.get(clickCount - leftCount).x, rightLines.get(clickCount - leftCount).y - 30);
                             rightStaticLayout.get(clickCount - leftCount).draw(canvas);
                             canvas.restore();
                         }
@@ -333,13 +333,12 @@ public class LineDrawView extends LineBaseView {
                         if (clickCount < leftCount) {
                             path.moveTo(leftLines.get(clickCount).x, leftLines.get(clickCount).y);
                             path.lineTo(list.get(j).x, list.get(j).y);
-                            if (i<leftChildCount) {
+                            if (i < leftChildCount) {
                                 canvas.drawPath(path, leftPaints.get(i));
                                 if (j == list.size() - 1) {
                                     canvas.drawCircle(list.get(j).x, list.get(j).y, 30, leftPaints.get(i));
                                 }
-                            }
-                            else {
+                            } else {
                                 canvas.drawPath(path, rightPaints.get(i));
                                 if (j == list.size() - 1) {
                                     canvas.drawCircle(list.get(j).x, list.get(j).y, 30, rightPaints.get(i));
@@ -349,13 +348,12 @@ public class LineDrawView extends LineBaseView {
                         } else {
                             path.moveTo(rightLines.get(clickCount - leftCount).x, rightLines.get(clickCount - leftCount).y);
                             path.lineTo(list.get(j).x, list.get(j).y);
-                            if (i<leftChildCount) {
+                            if (i < leftChildCount) {
                                 canvas.drawPath(path, leftPaints.get(i));
                                 if (j == list.size() - 1) {
                                     canvas.drawCircle(list.get(j).x, list.get(j).y, 30, leftPaints.get(i));
                                 }
-                            }
-                            else {
+                            } else {
                                 canvas.drawPath(path, rightPaints.get(i));
                                 if (j == list.size() - 1) {
                                     canvas.drawCircle(list.get(j).x, list.get(j).y, 30, rightPaints.get(i));
@@ -371,7 +369,6 @@ public class LineDrawView extends LineBaseView {
 
         canvas.restore();
     }
-
 
 
     public void refresh(DataModel dataModel) {
@@ -432,7 +429,7 @@ public class LineDrawView extends LineBaseView {
             leftPaints.add(paint);
 
             leftInfo.add("左边第" + i + "个点");
-            StaticLayout staticLayout=new StaticLayout(leftInfo.get(i),cirPaint, 75, Layout.Alignment.ALIGN_NORMAL, 1, 0, false);
+            StaticLayout staticLayout = new StaticLayout(leftInfo.get(i), cirPaint, 75, Layout.Alignment.ALIGN_NORMAL, 1, 0, false);
             leftStaticLayout.add(staticLayout);
         }
 
@@ -463,7 +460,7 @@ public class LineDrawView extends LineBaseView {
 
             rightInfo.add("右边第" + i + "个点");
 
-            StaticLayout staticLayout=new StaticLayout(rightInfo.get(i),cirPaint, 75, Layout.Alignment.ALIGN_NORMAL, 1, 0, false);
+            StaticLayout staticLayout = new StaticLayout(rightInfo.get(i), cirPaint, 75, Layout.Alignment.ALIGN_NORMAL, 1, 0, false);
             rightStaticLayout.add(staticLayout);
         }
 
@@ -474,14 +471,14 @@ public class LineDrawView extends LineBaseView {
     public void touchUp(MotionEvent event) {
         super.touchUp(event);
         if (doublePointer)
-            doublePointer=false;
+            doublePointer = false;
         if (isMove) {
             isMove = false;
             return;
         }
         float x = event.getX() - mTran[0];
         float y = event.getY() - mTran[1];
-        int i=0;
+        int i = 0;
         int clickCount = isInRect(x, y, leftRects);
         if (clickCount >= 0) {
             Toast.makeText(context, leftInfo.get(clickCount), Toast.LENGTH_SHORT).show();
@@ -495,15 +492,15 @@ public class LineDrawView extends LineBaseView {
 
         if (clickCount >= 0) {
             LineDrawView.this.clickCount = clickCount;
-            scaleCount=1;
-            lastScale=1;
-            for(PointF pointF:leftLines){
-                leftRects.get(i).set(pointF.x-30,pointF.y-50,pointF.x+80,pointF.y+50);
+            scaleCount = 1;
+            lastScale = 1;
+            for (PointF pointF : leftLines) {
+                leftRects.get(i).set(pointF.x - 30, pointF.y - 50, pointF.x + 80, pointF.y + 50);
                 i++;
             }
-            i=0;
-            for (PointF pointF:rightLines){
-                rightRects.get(i).set(pointF.x-30,pointF.y-50,pointF.x+80,pointF.y+50);
+            i = 0;
+            for (PointF pointF : rightLines) {
+                rightRects.get(i).set(pointF.x - 30, pointF.y - 50, pointF.x + 80, pointF.y + 50);
                 i++;
             }
         }
@@ -511,12 +508,12 @@ public class LineDrawView extends LineBaseView {
             int count = isInRect(x, y, childRect);
             if (count >= 0) {
                 Toast.makeText(context, "你点的子节点", Toast.LENGTH_SHORT).show();
-                i=0;
-                for(PointF pointF:childList){
-                    childRect.get(i).set(pointF.x-50,pointF.y-50,pointF.x+50,pointF.y+50);
+                i = 0;
+                for (PointF pointF : childList) {
+                    childRect.get(i).set(pointF.x - 50, pointF.y - 50, pointF.x + 50, pointF.y + 50);
                     i++;
                 }
-            } else if (clickCount!=-1){
+            } else if (clickCount != -1) {
                 if (isDrawChildLine)
                     putChildAnim(LineDrawView.this.clickCount);
                 else
@@ -630,7 +627,7 @@ public class LineDrawView extends LineBaseView {
         if (clickCount < leftCount) {
             for (int i = 0; i < leftChildCount + rightChildCount; i++) {
                 childAngles[leftChildCount + rightChildCount - i - 1] = 135 + angle * i;
-                TextPaint paint=new TextPaint();
+                TextPaint paint = new TextPaint();
                 paint.setStyle(Paint.Style.FILL);
                 paint.setTextAlign(Paint.Align.RIGHT);
                 paint.setColor(Color.WHITE);
@@ -643,7 +640,7 @@ public class LineDrawView extends LineBaseView {
             for (int i = 0; i < leftChildCount + rightChildCount; i++) {
                 childAngles[leftChildCount + rightChildCount - i - 1]
                         = 315 + angle * i >= 360 ? 315 + angle * i - 360 : 315 + angle * i;
-                TextPaint paint=new TextPaint();
+                TextPaint paint = new TextPaint();
                 paint.setStyle(Paint.Style.FILL);
                 paint.setTextAlign(Paint.Align.LEFT);
                 paint.setColor(Color.WHITE);

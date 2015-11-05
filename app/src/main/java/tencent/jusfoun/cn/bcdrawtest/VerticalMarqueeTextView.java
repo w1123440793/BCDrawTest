@@ -228,7 +228,7 @@ public final class VerticalMarqueeTextView extends ScrollView {
 
     private TextView textView;
 
-    private int     marqueeSpeed;
+    private int marqueeSpeed;
     private boolean autoStartMarquee;
     private boolean marqueeStarted;
     private boolean marqueePaused;
@@ -253,6 +253,7 @@ public final class VerticalMarqueeTextView extends ScrollView {
 
     /**
      * Returns the text content of this text view.
+     *
      * @return The text content of this text view.
      */
     public CharSequence getText() {
@@ -261,6 +262,7 @@ public final class VerticalMarqueeTextView extends ScrollView {
 
     /**
      * Sets a string for this text view.
+     *
      * @param text The text to set.
      */
     public void setText(final CharSequence text) {
@@ -269,6 +271,7 @@ public final class VerticalMarqueeTextView extends ScrollView {
 
     /**
      * Returns the speed of the marquee effect animation.
+     *
      * @return The speed of the marquee effect animation.
      */
     public int getMarqueeSpeed() {
@@ -277,6 +280,7 @@ public final class VerticalMarqueeTextView extends ScrollView {
 
     /**
      * Sets the speed of the marquee effect animation. Valid range is [1, 1000].
+     *
      * @param marqueeSpeed The speed of the marquee effect animation to set. Valid range is [1, 1000].
      */
     public void setMarqueeSpeed(final int marqueeSpeed) {
@@ -288,7 +292,7 @@ public final class VerticalMarqueeTextView extends ScrollView {
      */
     public void startMarquee() {
         this.marqueeStarted = true;
-        this.marqueePaused  = false;
+        this.marqueePaused = false;
 
         new MarqueeAsyncTask().execute(this.textView);
     }
@@ -322,11 +326,11 @@ public final class VerticalMarqueeTextView extends ScrollView {
             return 0;
         }
 
-        final int length  = this.getVerticalFadingEdgeLength();
+        final int length = this.getVerticalFadingEdgeLength();
         final int scrollY = this.textView.getScrollY();
 
         if (scrollY < length) {
-            return scrollY / (float)length;
+            return scrollY / (float) length;
         }
 
         return 1;
@@ -399,14 +403,14 @@ public final class VerticalMarqueeTextView extends ScrollView {
     private final class MarqueeAsyncTask extends AsyncTask<TextView, Void, Void> {
         @Override
         protected Void doInBackground(final TextView... params) {
-            final Activity activity = (Activity)params[0].getContext();
-            final Runnable runnable = new MarqueeRunnable((ViewGroup)params[0].getParent(), params[0]);
+            final Activity activity = (Activity) params[0].getContext();
+            final Runnable runnable = new MarqueeRunnable((ViewGroup) params[0].getParent(), params[0]);
 
             while (VerticalMarqueeTextView.this.marqueeStarted && !VerticalMarqueeTextView.this.marqueePaused) {
                 activity.runOnUiThread(runnable);
 
                 try {
-                    Thread.sleep((long)(1000d / VerticalMarqueeTextView.this.marqueeSpeed));
+                    Thread.sleep((long) (1000d / VerticalMarqueeTextView.this.marqueeSpeed));
                 } catch (final InterruptedException e) {
                 }
             }
@@ -417,21 +421,22 @@ public final class VerticalMarqueeTextView extends ScrollView {
 
     private final class MarqueeRunnable implements Runnable {
         private final ViewGroup parent;
-        private final TextView  textView;
+        private final TextView textView;
 
         /**
          * Creates a new instance of {@link MarqueeRunnable}.
-         * @param parent The parent container that hosts the specific {@link TextView}.
+         *
+         * @param parent   The parent container that hosts the specific {@link TextView}.
          * @param textView The {@link TextView} to apply marquee effect.
          */
         public MarqueeRunnable(final ViewGroup parent, final TextView textView) {
-            this.parent   = parent;
+            this.parent = parent;
             this.textView = textView;
         }
 
         @Override
         public void run() {
-            final int height       = this.heightOf(this.textView);
+            final int height = this.heightOf(this.textView);
             final int parentHeight = this.parent.getHeight();
 
             if (height > 0 && parentHeight > 0 && height > parentHeight) {
@@ -448,6 +453,7 @@ public final class VerticalMarqueeTextView extends ScrollView {
         /**
          * Returns the standard height (i.e. without text effects such as shadow) of all the text of
          * the given {@link TextView}.
+         *
          * @param textView The {@link TextView} to determine the height of all its text content.
          * @return The standard height of all the text content of the given {@link TextView}.
          */

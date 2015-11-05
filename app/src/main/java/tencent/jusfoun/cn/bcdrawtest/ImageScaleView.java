@@ -27,7 +27,7 @@ public class ImageScaleView extends View {
     private Matrix matrix;
     private Context context;
     private PointF mCir;
-    private float count=0;
+    private float count = 0;
     private Thread thread;
 
     private Paint paint;
@@ -35,6 +35,7 @@ public class ImageScaleView extends View {
     private boolean isStarting = false;
     private List<String> alphaList = new ArrayList<String>();
     private List<String> startWidthList = new ArrayList<String>();
+
     public ImageScaleView(Context context) {
         super(context);
         init(context);
@@ -50,11 +51,11 @@ public class ImageScaleView extends View {
         init(context);
     }
 
-    public void init(Context context){
-        this.context=context;
-        matrix=new Matrix();
-        bitmap= BitmapFactory.decodeResource(context.getResources(),R.mipmap.cir);
-        mCir=new PointF();
+    public void init(Context context) {
+        this.context = context;
+        matrix = new Matrix();
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.mipmap.cir);
+        mCir = new PointF();
 
         paint = new Paint();
         paint.setColor(Color.RED);//此处颜色可以改为自己喜欢的
@@ -67,8 +68,8 @@ public class ImageScaleView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mCir.x=w/2;
-        mCir.y=h/2;
+        mCir.x = w / 2;
+        mCir.y = h / 2;
         start();
     }
 
@@ -81,12 +82,11 @@ public class ImageScaleView extends View {
             int alpha = Integer.parseInt(alphaList.get(i));
             int startWidth = Integer.parseInt(startWidthList.get(i));
             paint.setAlpha(alpha);
-            canvas.drawCircle(mCir.x, mCir.y, startWidth,paint);
+            canvas.drawCircle(mCir.x, mCir.y, startWidth, paint);
             //同心圆扩散
-            if ( alpha > 0 && startWidth < maxWidth)
-            {
-                alphaList.set(i, (alpha-2)+"");
-                startWidthList.set(i, (startWidth+1)+"");
+            if (alpha > 0 && startWidth < maxWidth) {
+                alphaList.set(i, (alpha - 2) + "");
+                startWidthList.set(i, (startWidth + 1) + "");
             }
         }
         if (Integer.parseInt(startWidthList.get(startWidthList.size() - 1)) == maxWidth / 5) {
@@ -94,8 +94,7 @@ public class ImageScaleView extends View {
             startWidthList.add("0");
         }
         //同心圆数量达到6个，删除最外层圆
-        if(startWidthList.size()==3)
-        {
+        if (startWidthList.size() == 3) {
             startWidthList.remove(0);
             alphaList.remove(0);
         }
@@ -107,14 +106,14 @@ public class ImageScaleView extends View {
         canvas.restore();
     }
 
-    public void start(){
-        if (thread==null){
-            thread=new Thread(new Runnable() {
+    public void start() {
+        if (thread == null) {
+            thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    while (true){
-                        if (count>50)
-                            count=0;
+                    while (true) {
+                        if (count > 50)
+                            count = 0;
                         else
                             count++;
                         try {

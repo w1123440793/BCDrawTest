@@ -50,7 +50,7 @@ public class LineBaseView extends View {
     protected ArrayList<String> rightInfo = new ArrayList<>();
     protected ArrayList<RectF> leftRects = new ArrayList<>();
     protected ArrayList<RectF> rightRects = new ArrayList<>();
-    protected ArrayList<TextPaint> childPaints=new ArrayList<>();
+    protected ArrayList<TextPaint> childPaints = new ArrayList<>();
 
     protected float leftAngles[], rightAngles[], mTran[], childAngles[];
     protected Path path;
@@ -73,8 +73,8 @@ public class LineBaseView extends View {
     protected Bitmap mCirBitmap, mBlueArrow, mBlueLight, mRedArrow, mRedLight;
     protected Matrix mCirMatrix, mRedArrowMatrix, mRedLightMatrix, mBlueArrowMatrix, mBlueLightMatrix, mCirMatrixChild;
     protected PointF leftArrowAngle[], rightArrowAngle[], childArrowAngle[];
-    protected ArrayList<StaticLayout> leftStaticLayout=new ArrayList<>();
-    protected ArrayList<StaticLayout> rightStaticLayout=new ArrayList<>();
+    protected ArrayList<StaticLayout> leftStaticLayout = new ArrayList<>();
+    protected ArrayList<StaticLayout> rightStaticLayout = new ArrayList<>();
 
     protected Paint paint;
     protected int maxWidth = 60;
@@ -184,7 +184,6 @@ public class LineBaseView extends View {
     }
 
 
-
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -281,52 +280,53 @@ public class LineBaseView extends View {
 
     private float minit = 0;
 
-    float lastScale=1;
-    private float x1,x2,x3;
-    private PointF pointf=new PointF();
+    float lastScale = 1;
+    private float x1, x2, x3;
+    private PointF pointf = new PointF();
+
     private void scale(MotionEvent event) {
-        doublePointer=true;
+        doublePointer = true;
         mVelocityTracker.addMovement(event);
         mVelocityTracker.computeCurrentVelocity(2000);
         isMove = true;
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_POINTER_UP:
-                lastScale=scaleCount;
+                lastScale = scaleCount;
                 break;
             case MotionEvent.ACTION_MOVE:
                 float toScal = getXYLength(event);
-                x2=toScal;
-                x3=x2/x1;
+                x2 = toScal;
+                x3 = x2 / x1;
                 float v = mVelocityTracker.getXVelocity();
                 if (Math.abs(v) < 5)
                     break;
-                scaleCount = toScal / minit-1+lastScale;
-                int i=0;
-                for(PointF pointF:leftLines){
-                    float x = pointF.x-mCir.x;
-                    float y=pointF.y-mCir.y;
-                    x=x*x3+mCir.x;
-                    y=y*x3+mCir.y;
-                    leftRects.get(i).set(x-50,y-50,x+50,y+50);
+                scaleCount = toScal / minit - 1 + lastScale;
+                int i = 0;
+                for (PointF pointF : leftLines) {
+                    float x = pointF.x - mCir.x;
+                    float y = pointF.y - mCir.y;
+                    x = x * x3 + mCir.x;
+                    y = y * x3 + mCir.y;
+                    leftRects.get(i).set(x - 50, y - 50, x + 50, y + 50);
                     i++;
                 }
-                i=0;
-                for (PointF pointF:rightLines){
-                    float x = pointF.x-mCir.x;
-                    float y=pointF.y-mCir.y;
-                    x=x*x3+mCir.x;
-                    y=y*x3+mCir.y;
-                    rightRects.get(i).set(x-50,y-50,x+50,y+50);
+                i = 0;
+                for (PointF pointF : rightLines) {
+                    float x = pointF.x - mCir.x;
+                    float y = pointF.y - mCir.y;
+                    x = x * x3 + mCir.x;
+                    y = y * x3 + mCir.y;
+                    rightRects.get(i).set(x - 50, y - 50, x + 50, y + 50);
                     i++;
                 }
 
-                i=0;
-                for(PointF pointF:childList){
-                    float x = pointF.x-mCir.x;
-                    float y=pointF.y-mCir.y;
-                    x=x*x3+mCir.x;
-                    y=y*x3+mCir.y;
-                    childRect.get(i).set(x-50,y-50,x+50,y+50);
+                i = 0;
+                for (PointF pointF : childList) {
+                    float x = pointF.x - mCir.x;
+                    float y = pointF.y - mCir.y;
+                    x = x * x3 + mCir.x;
+                    y = y * x3 + mCir.y;
+                    childRect.get(i).set(x - 50, y - 50, x + 50, y + 50);
                     i++;
                 }
                 postInvalidate();
@@ -335,13 +335,13 @@ public class LineBaseView extends View {
 
                 if (event.getPointerCount() == 2) {
                     minit = getXYLength(event);
-                    x1=minit;
+                    x1 = minit;
                 }
                 break;
         }
     }
 
-    public void touchUp(MotionEvent event){
+    public void touchUp(MotionEvent event) {
     }
 
     private void stopThread() {
