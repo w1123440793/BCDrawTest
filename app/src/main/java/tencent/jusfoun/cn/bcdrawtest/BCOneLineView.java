@@ -8,9 +8,7 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
-import android.graphics.RadialGradient;
 import android.graphics.RectF;
-import android.graphics.Shader;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextPaint;
@@ -91,7 +89,7 @@ public class BCOneLineView extends View {
 
         paintOne = new Paint();
         paintOne.setStyle(Paint.Style.STROKE);
-        paintOne.setColor(Color.BLUE);
+        paintOne.setColor(Color.parseColor("#01B9FF"));
         paintOne.setPathEffect(new DashPathEffect(new float[]{4, 8, 5, 10}, 1));
         paintOne.setStrokeWidth(3);
         paintOne.setAntiAlias(true);
@@ -99,7 +97,7 @@ public class BCOneLineView extends View {
 
         paintTwo = new Paint();
         paintTwo.setStyle(Paint.Style.STROKE);
-        paintTwo.setColor(Color.RED);
+        paintTwo.setColor(Color.parseColor("#FF2F2F"));
         paintTwo.setStrokeWidth(3);
         paintTwo.setAntiAlias(true);
         paintTwo.setAlpha(255);
@@ -210,13 +208,13 @@ public class BCOneLineView extends View {
                 for (int j = 0; j < ps.size(); j++) {
                     path.lineTo(ps.get(j).x, ps.get(j).y);
                     if (j == ps.size() - 1)
-                        canvas.drawCircle(ps.get(j).x, ps.get(j).y, 5, paintList.get(i));
+                        canvas.drawCircle(ps.get(j).x, ps.get(j).y, 20, paintList.get(i));
                 }
             } else {
                 if (!isSacle) {
                     int j = a;
                     if (j < ps.size()) {
-                        canvas.drawCircle(ps.get(j).x, ps.get(j).y, 5, paintList.get(i));
+                        canvas.drawCircle(ps.get(j).x, ps.get(j).y, 20, paintList.get(i));
                     } else {
                         a = 0;
                     }
@@ -241,13 +239,13 @@ public class BCOneLineView extends View {
 
                     path.lineTo(ps.get(j).x, ps.get(j).y);
                     if (j == ps.size() - 1)
-                        canvas.drawCircle(ps.get(j).x, ps.get(j).y, 5, paintList.get(i));
+                        canvas.drawCircle(ps.get(j).x, ps.get(j).y, 20, paintList.get(i));
                 }
             } else {
                 if (!isSacle) {
                     int j = a;
                     if (j < ps.size()) {
-                        canvas.drawCircle(ps.get(j).x, ps.get(j).y, 5, paintList.get(i));
+                        canvas.drawCircle(ps.get(j).x, ps.get(j).y, 20, paintList.get(i));
 //                    canvas.drawCircle(pointf.x, pointf.y, 20, paintList.get(i));
                     }
                     path.quadTo(p3.get(count).x, p3.get(count).y, p2.get(count).x, p2.get(count).y);
@@ -333,12 +331,8 @@ public class BCOneLineView extends View {
 //            paint.setStyle(Paint.Style.STROKE);
 //            paint.setColor(Color.CYAN);
             paint.setStrokeWidth(5);
-//            RadialGradient shader=new RadialGradient(p0.get(i).x,p0.get(i).y,mRaius,
-//                    new int[]{Color.TRANSPARENT,Color.CYAN},new float[]{0.2f, 1f},Shader.TileMode.REPEAT);
-            RadialGradient shader = new RadialGradient(p0.get(i).x, p0.get(i).y, mRaius, Color.TRANSPARENT, Color.CYAN, Shader.TileMode.REPEAT);
-//            paint.setShader(shader);
             paint.setAntiAlias(true);
-            paint.setColor(Color.parseColor("#FFF3F1"));
+            paint.setColor(Color.CYAN);
 //            paint.setAlpha(100);
             paintList.add(paint);
 
@@ -384,8 +378,6 @@ public class BCOneLineView extends View {
             p3.add(p);
         }
 
-        RadialGradient shader = new RadialGradient(mCirX, mCirY, mRaius, Color.TRANSPARENT, Color.CYAN, Shader.TileMode.REPEAT);
-        cirPaint.setShader(shader);
         start();
     }
 

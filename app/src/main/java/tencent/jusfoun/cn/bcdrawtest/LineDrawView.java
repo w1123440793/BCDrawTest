@@ -78,33 +78,6 @@ public class LineDrawView extends LineBaseView {
                     canvas.drawText(leftInfo.get(i), (leftLines.get(i).x - 80), (leftLines.get(i).y + 12), leftPaint);
                     canvas.restore();
                 }
-                if (mCirBitmap != null && !mCirBitmap.isRecycled()) {
-                    mCirMatrix.setScale(mRaiusCount / 50f, mRaiusCount / 50f, mCirBitmap.getWidth() / 2, mCirBitmap.getHeight() / 2);
-                    mCirMatrix.postTranslate(mCir.x - mCirBitmap.getWidth() / 2, mCir.y - mCirBitmap.getHeight() / 2);
-                    canvas.drawBitmap(mCirBitmap, mCirMatrix, null);
-                }
-
-                for (int j = 0; j < alphaList.size(); j++) {
-                    int alpha = Integer.parseInt(alphaList.get(j));
-                    int startWidth = Integer.parseInt(startWidthList.get(j));
-                    paint.setAlpha(alpha);
-                    canvas.drawCircle(mCir.x, mCir.y, startWidth, paint);
-                    Log.e(TAG, startWidth + "");
-                    //同心圆扩散
-                    if (alpha > 0 && startWidth < maxWidth) {
-                        alphaList.set(j, (alpha - 2) + "");
-                        startWidthList.set(j, (startWidth + 1) + "");
-                    }
-                }
-                if (Integer.parseInt(startWidthList.get(startWidthList.size() - 1)) == (50 + maxWidth / 5)) {
-                    alphaList.add("255");
-                    startWidthList.add("50");
-                }
-                //同心圆数量达到3个，删除最外层圆
-                if (startWidthList.size() == 3) {
-                    startWidthList.remove(0);
-                    alphaList.remove(0);
-                }
 
                 if (mRedArrow != null && !mRedArrow.isRecycled()) {
                     mRedArrowMatrix.setRotate(leftAngles[i] + 180, mRedArrow.getWidth() / 2, mRedArrow.getHeight() / 2);
@@ -187,6 +160,13 @@ public class LineDrawView extends LineBaseView {
             }
             path.close();
         }
+
+        if (mCirBitmap != null && !mCirBitmap.isRecycled()) {
+            mCirMatrix.setScale(mRaiusCount / 50f, mRaiusCount / 50f, mCirBitmap.getWidth() / 2, mCirBitmap.getHeight() / 2);
+            mCirMatrix.postTranslate(mCir.x - mCirBitmap.getWidth() / 2, mCir.y - mCirBitmap.getHeight() / 2);
+            canvas.drawBitmap(mCirBitmap, mCirMatrix, null);
+        }
+
         canvas.drawCircle(mCir.x, mCir.y, 50, mCirPaint);
         canvas.save();
         canvas.translate(mCir.x, mCir.y - 30);
@@ -295,32 +275,34 @@ public class LineDrawView extends LineBaseView {
                     }
                     for (int i = 0; i < leftChildCount + rightChildCount; i++) {
                         if (clickCount < leftCount) {
-                            canvas.drawCircle(leftLines.get(clickCount).x, leftLines.get(clickCount).y, 50, mCirPaint);
-                            if (mCirBitmap != null && !mCirBitmap.isRecycled()) {
-                                mCirMatrixChild.setScale(mRaiusCount / 50f, mRaiusCount / 50f, mCirBitmap.getWidth() / 2, mCirBitmap.getHeight() / 2);
-                                mCirMatrixChild.postTranslate(leftLines.get(clickCount).x - mCirBitmap.getWidth() / 2
-                                        , leftLines.get(clickCount).y - mCirBitmap.getHeight() / 2);
-                                canvas.drawBitmap(mCirBitmap, mCirMatrixChild, null);
-                            }
-
                             canvas.save();
                             canvas.translate(leftLines.get(clickCount).x, leftLines.get(clickCount).y - 30);
                             leftStaticLayout.get(clickCount).draw(canvas);
                             canvas.restore();
 
                         } else {
-                            canvas.drawCircle(rightLines.get(clickCount - leftCount).x, rightLines.get(clickCount - leftCount).y, 50, mCirPaint);
-                            if (mCirBitmap != null && !mCirBitmap.isRecycled()) {
-                                mCirMatrixChild.setScale(mRaiusCount / 50f, mRaiusCount / 50f, mCirBitmap.getWidth() / 2, mCirBitmap.getHeight() / 2);
-                                mCirMatrixChild.postTranslate(rightLines.get(clickCount - leftCount).x - mCirBitmap.getWidth() / 2
-                                        , rightLines.get(clickCount - leftCount).y - mCirBitmap.getHeight() / 2);
-                                canvas.drawBitmap(mCirBitmap, mCirMatrixChild, null);
-                            }
-
                             canvas.save();
                             canvas.translate(rightLines.get(clickCount - leftCount).x, rightLines.get(clickCount - leftCount).y - 30);
                             rightStaticLayout.get(clickCount - leftCount).draw(canvas);
                             canvas.restore();
+                        }
+                    }
+
+                    if (clickCount < leftCount) {
+                        if (mCirBitmap != null && !mCirBitmap.isRecycled()) {
+                            canvas.drawCircle(leftLines.get(clickCount).x, leftLines.get(clickCount).y, 50, mCirPaint);
+                            mCirMatrixChild.setScale(mRaiusCount / 50f, mRaiusCount / 50f, mCirBitmap.getWidth() / 2, mCirBitmap.getHeight() / 2);
+                            mCirMatrixChild.postTranslate(leftLines.get(clickCount).x - mCirBitmap.getWidth() / 2
+                                    , leftLines.get(clickCount).y - mCirBitmap.getHeight() / 2);
+                            canvas.drawBitmap(mCirBitmap, mCirMatrixChild, null);
+                        }
+                    } else {
+                        canvas.drawCircle(rightLines.get(clickCount - leftCount).x, rightLines.get(clickCount - leftCount).y, 50, mCirPaint);
+                        if (mCirBitmap != null && !mCirBitmap.isRecycled()) {
+                            mCirMatrixChild.setScale(mRaiusCount / 50f, mRaiusCount / 50f, mCirBitmap.getWidth() / 2, mCirBitmap.getHeight() / 2);
+                            mCirMatrixChild.postTranslate(rightLines.get(clickCount - leftCount).x - mCirBitmap.getWidth() / 2
+                                    , rightLines.get(clickCount - leftCount).y - mCirBitmap.getHeight() / 2);
+                            canvas.drawBitmap(mCirBitmap, mCirMatrixChild, null);
                         }
                     }
                 }
@@ -384,7 +366,7 @@ public class LineDrawView extends LineBaseView {
 
         leftArrowAngle = new PointF[leftCount];
         rightArrowAngle = new PointF[rightCount];
-        mStaticLayout = new StaticLayout("九次方财富资", cirPaint, 75, Layout.Alignment.ALIGN_NORMAL, 1, 0, false);
+        mStaticLayout = new StaticLayout("这是个中心点", cirPaint, 75, Layout.Alignment.ALIGN_NORMAL, 1, 0, false);
         if (leftCount == 0) {
             //TODO:投资人为零
         }

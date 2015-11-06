@@ -1,6 +1,7 @@
 package tencent.jusfoun.cn.bcdrawtest;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,35 +9,40 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private BCMoreView bcMoreView;
+
+
+    private CheckBox checkBox;//一个改变了样式的
     private LineDrawView lineDrawView;
-    private RelativeLayout relativeLayout;
-    private CheckBox checkBox;
+    private BCOneLineView bcOneLineView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(new ImageScaleView(getApplicationContext()));
         setContentView(R.layout.activity_main);
-        lineDrawView = (LineDrawView) findViewById(R.id.bc);
-        relativeLayout = (RelativeLayout) findViewById(R.id.info);
-        lineDrawView.setClickPot(new LineDrawView.OnClickPotListener() {
+        checkBox = (CheckBox) findViewById(R.id.checkbox);
+        lineDrawView= (LineDrawView) findViewById(R.id.lineview);
+        bcOneLineView= (BCOneLineView) findViewById(R.id.bcview);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClickPot() {
-//                relativeLayout.setVisibility(View.VISIBLE);
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    checkBox.setText("直线展开");
+                    lineDrawView.setVisibility(View.VISIBLE);
+                    bcOneLineView.setVisibility(View.GONE);
+                } else {
+                    checkBox.setText("曲线展开");
+                    lineDrawView.setVisibility(View.GONE);
+                    bcOneLineView.setVisibility(View.VISIBLE);
+                }
             }
         });
-
-        checkBox = (CheckBox) findViewById(R.id.checkbox);
-//        BCView bcView=new BCView(this);
-//        BCTwoView bcTwoView=new BCTwoView(this);
-//        BCMoreView bcMoreView=new BCMoreView(this);
-//        setContentView(bcTwoView);
-//        setContentView(bcMoreView);
+        checkBox.setChecked(true);
     }
 
     @Override
