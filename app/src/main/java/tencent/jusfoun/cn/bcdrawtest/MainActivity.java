@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private CheckBox checkBox;//一个改变了样式的
+    private CheckBox checkBox;//一个改变了样式的Checkbox
     private LineDrawView lineDrawView;
     private BCOneLineView bcOneLineView;
 
