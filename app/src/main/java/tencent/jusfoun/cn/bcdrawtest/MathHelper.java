@@ -1,7 +1,9 @@
 package tencent.jusfoun.cn.bcdrawtest;
 
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.PointF;
+import android.util.Log;
 
 /**
  * Author  JUSFOUN
@@ -71,7 +73,6 @@ public class MathHelper {
             cirPoint.X = (float) (X + Math.cos(arcAngle) * radius);
             cirPoint.Y = (float) (Y - Math.sin(arcAngle) * radius);
         }
-
         return cirPoint;
     }
 
@@ -250,5 +251,53 @@ public class MathHelper {
         pointF.y = (float) (y * Math.pow(one_t, 2) + 2 * y1 * t * one_t + y2 * Math.pow(t, 2));
         return pointF;
 
+    }
+
+    public void getDotLocation(Point[] dotLocations, int width, int height){
+
+        int w=width/4;
+        int h=height/3;
+        for (int i = 0; i < 30; i++) {
+            for (int j = 0; j < 4 ; j++) {
+                Point point=new Point();
+                point.x=w*j+50;
+                point.y=h*i+50;
+                dotLocations[j+i*4]=point;
+            }
+        }
+    }
+
+    public float getAngel(Point A,Point B){
+        float angel=-1;
+        float c= (float) Math.sqrt((A.x-B.x)*(A.x-B.x)
+                +(A.y-B.y)*(A.y-B.y));
+        float a=B.x-A.x;
+        float b=B.y-A.y;
+        if (b==0&&a>=0){
+            angel=0;
+        }else if (b==0&&a<0){
+            angel=180;
+        }else if (a==0&&b>=0){
+            angel=90;
+        }else if (a==0&&b<0){
+            angel=270;
+        }else if (b<0){
+            angel= (float) (Math.PI+Math.asin(a/c)+90*Math.PI/180);
+        }else if (b>0){
+            angel= (float) (90*Math.PI/180-Math.asin(a/c));
+        }
+        return (float) (angel*180/Math.PI);
+    }
+
+    public int getXYLength(Point A,Point B){
+        return (int) Math.sqrt((A.x-B.x)*(A.x-B.x)
+                +(A.y-B.y)*(A.y-B.y));
+    }
+
+    public PointF getPoint(int x,int y,float angel,float scale){
+        double arc=  (Math.PI * ((angel-90) / 180.0f));
+        pointF.y=y;
+        pointF.x= (float) (x-Math.tan(arc)*(y-60));
+        return pointF;
     }
 }
